@@ -97,13 +97,13 @@ public class DehnTwist extends Rabbit {
         return exp;
     }
 
-    public boolean is_liftable() {
+    private boolean isLiftable() {
         return !((identifier.getSecond() == this.earCount + 1) && (exp % 2 == 1));
     }
 
     /** Decomposes non-liftable Dehn twist into the largest power that does lift and the single power that doesn't **/
     public List<DehnTwist> decomp() {
-        if (this.is_liftable()) {
+        if (this.isLiftable()) {
             throw new InvalidParameterException("This does not need to be decomposed");
         }
 
@@ -127,10 +127,15 @@ public class DehnTwist extends Rabbit {
 
         ret_val.add(nonliftable_part);
         return ret_val;
-
-
         
     }
+
+    /** Decides whether two Dehn Twists commute with one another **/
+    private boolean commutesWith(DehnTwist t) {
+        // TODO: implement 
+        return false;
+    }
+
     // TODO: override the toString
     @Override
     public String toString() {
