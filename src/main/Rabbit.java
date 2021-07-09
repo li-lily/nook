@@ -85,15 +85,7 @@ public class Rabbit {
     /** Generates a random Mapping Class**/
     public MappingClass genRandomWord() {
         int num_terms = abs(resident_random.nextInt());
-        List<DehnTwist> twist_list = new ArrayList<>();
-
-        while (num_terms > 0) {
-            DehnTwist next = genRandomTwist();
-            twist_list.add(next);
-            num_terms--;
-        }
-
-        return new MappingClass(twist_list);
+        return genRandomWord(num_terms);
     }
 
     /** Generates a random Mapping Class**/
