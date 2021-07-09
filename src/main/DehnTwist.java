@@ -168,8 +168,12 @@ public class DehnTwist {
 
     /** Decides whether two Dehn Twists commute with one another **/
     public boolean commutesWith(DehnTwist t) {
-        // TODO: implement 
-        return false;
+        // if "this" contains the smallest indexed point
+        if (this.getidentifier().getFirst() < t.getidentifier().getFirst()) {
+            return this.getidentifier().getSecond() < t.getidentifier().getSecond();
+        } else {
+            return this.getidentifier().getSecond() > t.getidentifier().getSecond();
+        }
     }
 
     /** Returns the inverse of the current Dehn Twist **/
@@ -178,11 +182,22 @@ public class DehnTwist {
     }
 
     // TODO: override the equals function and (maybe) the hash
+    public boolean equals(DehnTwist t) {
 
-    // TODO: override the toString
+        // If the object is compared with itself then return true
+        if (t == this) {
+            return true;
+        }
+
+        if (t == null) {
+            return false;
+        }
+
+        return (this.getExp() == t.getExp() && this.getidentifier().equals(t.getidentifier()));
+    }
+
     @Override
     public String toString() {
-        // TODO: implement toString for when 3 eared things have nicknames
         if (nickname != 'o') {
             return "D(" + nickname + ")^" + this.getExp();
         }

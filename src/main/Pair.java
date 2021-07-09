@@ -35,6 +35,20 @@ public class Pair {
 
     }
 
+    public boolean equals(Pair t) {
+
+        // If the object is compared with itself then return true
+        if (t == this) {
+            return true;
+        }
+
+        if (t == null) {
+            return false;
+        }
+
+        return (t.getSecond() == this.getSecond() && t.getFirst() == this.getSecond() && this.earCount == t.earCount);
+    }
+
     public int getFirst() {
         return first;
     }
