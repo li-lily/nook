@@ -70,10 +70,17 @@ public class MappingClass extends Rabbit {
     /** Checks if the word of a mapping class can still be simplified further **/
     private boolean isSimplified() {
         for (int i = 0; i < this.word.size() - 1; i++) {
-            if (this.word.get(i).getidentifier().equals(this.word.get(i+1).getidentifier())) {
+            DehnTwist current = this.word.get(i);
+            DehnTwist next = this.word.get(i+1);
+            if (current.getidentifier().equals(next.getidentifier())) {
+                // checks for the same Dehn twist consecutive to each other
+                return false;
+            } else if (current.getExp() == 0) {
+                // checks for 0 exponents
                 return false;
             }
         }
+
         return true;
     }
 
@@ -112,5 +119,34 @@ public class MappingClass extends Rabbit {
 
     public List<DehnTwist> getWord() {
         return this.word;
+    }
+
+    @Override
+    public boolean equals(Object t) {
+
+        // If the object is compared with itself then return true
+        if (t == this) {
+            return true;
+        }
+
+        if (!(t instanceof MappingClass)) {
+            return false;
+        }
+
+        MappingClass s = (MappingClass) t;
+
+        if (this.getWord().size() != s.getWord().size()) {
+            return false;
+        }
+
+        for (int i = 0; i < this.word.size(); i++) {
+            DehnTwist current_s = s.word.get(i);
+            DehnTwist current_self = this.word.get(i);
+            if (!current_s.equals(current_self)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
