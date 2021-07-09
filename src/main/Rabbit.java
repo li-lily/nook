@@ -57,10 +57,20 @@ public class Rabbit {
             }
         }
 
-        //TODO: Going to redo the above code using new constructor and conjugator function
+        //Finally we add conjugates of commutators
+        for (int i = 1; i < earCount; i++) {
+            MappingClass temp1 = new MappingClass(new DehnTwist(i,earCount + 1,1));
+            for (int j = 1; j < i; j++) {
+                for (int k = 1; k < earCount + 1; k++) {
+                    MappingClass temp2 = new MappingClass(new DehnTwist(j, earCount + 1, 1));
+                    MappingClass con = new MappingClass(new DehnTwist(k, earCount + 1, 1));
+                    generators.add(temp1.commutator(temp2).conjugate(con));
+                }
 
+            }
+        }
 
-        return null;
+        return generators;
     }
 
     public int getEarCount() {
