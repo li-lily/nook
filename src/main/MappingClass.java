@@ -47,8 +47,34 @@ public class MappingClass extends Rabbit {
 
     /** Takes in a mapping class and concatenates its list of Dehn Twists **/
     public MappingClass concatenate() {
-        // TODO: implement
-        return null;
+        List<DehnTwist> newList = new ArrayList<>();
+        MappingClass temp = new MappingClass(this.getWord());
+        int i = 0;
+        while (!temp.isSimplified()) {
+            while (i < temp.getWord().size()) {
+                int totalExp = temp.getWord().get(i).getExp();
+                while (i != temp.getWord().size() - 1 && temp.getWord().get(i).getidentifier().equals(temp.getWord().get(i+1).getidentifier())) {
+                    totalExp += temp.getWord().get(i+1).getExp();
+                    i++;
+                }
+                if (totalExp != 0) {
+                    newList.add(new DehnTwist(temp.getWord().get(i).getidentifier(), totalExp));
+                }
+                i++;
+            }
+        }
+
+        return temp;
+    }
+
+    /** Checks if the word of a mapping class can still be simplified further **/
+    private boolean isSimplified() {
+        for (int i = 0; i < this.word.size() - 1; i++) {
+            if (this.word.get(i).getidentifier().equals(this.word.get(i+1).getidentifier())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Returns the inverse of a mapping class **/
