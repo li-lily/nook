@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,6 +14,15 @@ public class MappingClass extends Rabbit {
 
     public MappingClass (List<DehnTwist> word) {
         this.word = word;
+        this.gen_count = parser();
+        this.coset = findCoset(word);
+        this.length = 0; //TODO: DONT FORGET TO SET LENGTH
+    }
+
+    public MappingClass (DehnTwist twist) {
+        List<DehnTwist> twist_list = new ArrayList<>();
+        twist_list.add(twist);
+        this.word = twist_list;
         this.gen_count = parser();
         this.coset = findCoset(word);
         this.length = 0; //TODO: DONT FORGET TO SET LENGTH

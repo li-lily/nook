@@ -52,10 +52,13 @@ public class Rabbit {
                         twist.add(conjugator.inverse());
                         twist.add(elt);
                         twist.add(conjugator);
+                        generators.add(new MappingClass(twist));
                     }
                 }
             }
         }
+
+        //TODO: Going to redo the above code using new constructor and conjugator function
 
 
         return null;
