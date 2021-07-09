@@ -123,6 +123,25 @@ public class DehnTwist {
 
         this.exp = exp;
         this.identifier = identifier;
+        if (identifier.getEarCount() == 3) {
+            if (identifier.getFirst() == 1) {
+                if (identifier.getSecond() == 2) {
+                    nickname = 'z';
+                } else if (identifier.getSecond() == 3) {
+                    nickname = 'b';
+                } else if (identifier.getSecond() == 4) {
+                    nickname = 'x';
+                }
+            } else if (identifier.getFirst() == 2) {
+                if (identifier.getSecond() == 3) {
+                    nickname = 'w';
+                } else if (identifier.getSecond() == 4) {
+                    nickname = 'c';
+                }
+            } else if (identifier.getFirst() == 4) {
+                nickname = 'y';
+            }
+        }
     }
 
     public Pair getidentifier() {
@@ -168,11 +187,14 @@ public class DehnTwist {
 
     /** Decides whether two Dehn Twists commute with one another **/
     public boolean commutesWith(DehnTwist t) {
+        if (this.getidentifier().equals(t.getidentifier())) {
+            return true;
+        }
         // if "this" contains the smallest indexed point
         if (this.getidentifier().getFirst() < t.getidentifier().getFirst()) {
-            return this.getidentifier().getSecond() < t.getidentifier().getSecond();
+            return this.getidentifier().getSecond() < t.getidentifier().getFirst();
         } else {
-            return this.getidentifier().getSecond() > t.getidentifier().getSecond();
+            return t.getidentifier().getSecond() < this.getidentifier().getFirst();
         }
     }
 
@@ -181,19 +203,21 @@ public class DehnTwist {
         return new DehnTwist(this.identifier, -this.exp);
     }
 
-    // TODO: override the equals function and (maybe) the hash
-    public boolean equals(DehnTwist t) {
+    @Override
+    public boolean equals(Object t) {
 
         // If the object is compared with itself then return true
         if (t == this) {
             return true;
         }
 
-        if (t == null) {
+        if (!(t instanceof DehnTwist)) {
             return false;
         }
 
-        return (this.getExp() == t.getExp() && this.getidentifier().equals(t.getidentifier()));
+        DehnTwist s = (DehnTwist) t;
+
+        return (this.getExp() == s.getExp() && this.getidentifier().equals(s.getidentifier()));
     }
 
     @Override

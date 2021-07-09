@@ -46,15 +46,19 @@ public class Pair {
             return false;
         }
 
-        return (t.getSecond() == this.getSecond() && t.getFirst() == this.getSecond() && this.earCount == t.earCount);
+        return (t.getSecond() == this.getSecond() && t.getSecond() == this.getSecond() && this.earCount == t.earCount);
     }
 
     public int getFirst() {
         return first;
     }
 
-
     public int getSecond() {
         return second;
     }
+
+    public int getEarCount() {
+        return earCount;
+    }
+
 }

@@ -52,4 +52,26 @@ public class TestDehnTwist {
         t = new DehnTwist(8, 6, 1);
         assertFalse(t.isLiftable());
     }
+
+    @Test
+    public void testCommute() {
+        // TODO: write a commutativity checker
+        DehnTwist t = new DehnTwist(1, 2, 2);
+        DehnTwist s = new DehnTwist(6, 5, 3);
+        assertTrue(t.commutesWith(s));
+        s = new DehnTwist(3, 4, 1);
+        assertTrue(t.commutesWith(s));
+        s = new DehnTwist(2, 4, 1);
+        assertFalse(t.commutesWith(s));
+        t = new DehnTwist(1, 3, -3);
+        assertFalse(s.commutesWith(t));
+    }
+
+    @Test
+    public void testEquals() {
+        DehnTwist t = new DehnTwist(1, 2, 2);
+        DehnTwist s = new DehnTwist(6, 5, 3);
+        s = new DehnTwist(s.getidentifier(), 2);
+        assertEquals(t, s);
+    }
 }
