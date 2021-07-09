@@ -46,7 +46,8 @@ public class MappingClass {
     }
 
     /** Takes in a mapping class and concatenates its list of Dehn Twists **/
-    public MappingClass concatenate() {
+    public MappingClass simplify() {
+        // TODO: SET LENGTH
         List<DehnTwist> newList = new ArrayList<>();
         MappingClass temp = new MappingClass(this.getWord());
         while (!temp.isSimplified()) {
@@ -64,6 +65,7 @@ public class MappingClass {
             }
 
             temp = new MappingClass(newList);
+            this.word = newList;
         }
 
         return temp;
@@ -100,7 +102,7 @@ public class MappingClass {
         List<DehnTwist> newTwists = new ArrayList<>(this.getWord());
         newTwists.addAll(other_mc.getWord());
         MappingClass product = new MappingClass(newTwists);
-        return product.concatenate();
+        return product.simplify();
     }
 
     /** Go CS **/
@@ -150,5 +152,14 @@ public class MappingClass {
         }
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+        String output = "Mapping Class: ";
+        for (DehnTwist twist : this.getWord()) {
+            output += twist.toString();
+        }
+        return output;
     }
 }
