@@ -9,9 +9,11 @@ import java.util.List;
 public class DehnTwist extends Rabbit {
     private Pair identifier;
     private int exp;
+    private char nickname;
+    private int earCount;
 
-    /** Constructor takes in two points and an exponent **/
-    public DehnTwist(int first, int second, int exp) {
+    /** Constructor takes in two points and an exponent, plus a rabbit to determine ears **/
+    public DehnTwist(int first, int second, int exp, Rabbit r) {
 
         this.exp = exp;
 
@@ -21,6 +23,62 @@ public class DehnTwist extends Rabbit {
             this.identifier = new Pair(first, second);
         } else {
             this.identifier = new Pair(second, first);
+        }
+
+        this.earCount = r.earCount;
+
+        if (r.earCount == 3) {
+            if (identifier.getFirst() == 1) {
+                if (identifier.getSecond() == 2) {
+                    nickname = 'z';
+                } else if (identifier.getSecond() == 3) {
+                    nickname = 'b';
+                } else if (identifier.getSecond() == 4) {
+                    nickname = 'x';
+                }
+            } else if (identifier.getFirst() == 2) {
+                if (identifier.getSecond() == 3) {
+                    nickname = 'w';
+                } else if (identifier.getSecond() == 4) {
+                    nickname = 'c';
+                }
+            } else if (identifier.getFirst() == 4) {
+                nickname = 'y';
+            }
+        }
+    }
+
+    /** Constructor takes in two points and an exponent with default of 3 ears **/
+    public DehnTwist(int first, int second, int exp) {
+
+        this.exp = exp;
+        // warning: HARDCODED
+        this.earCount = 3;
+
+        if (first == second) {
+            throw new InvalidParameterException("The Dehn Twist input does not surround two distinct points.");
+        } else if (first < second) {
+            this.identifier = new Pair(first, second);
+        } else {
+            this.identifier = new Pair(second, first);
+        }
+
+        if (identifier.getFirst() == 1) {
+            if (identifier.getSecond() == 2) {
+                nickname = 'z';
+            } else if (identifier.getSecond() == 3) {
+                nickname = 'b';
+            } else if (identifier.getSecond() == 4) {
+                nickname = 'x';
+            }
+        } else if (identifier.getFirst() == 2) {
+            if (identifier.getSecond() == 3) {
+                nickname = 'w';
+            } else if (identifier.getSecond() == 4) {
+                nickname = 'c';
+            }
+        } else if (identifier.getFirst() == 4) {
+            nickname = 'y';
         }
     }
 
@@ -40,7 +98,7 @@ public class DehnTwist extends Rabbit {
     }
 
     public boolean is_liftable() {
-        return !((identifier.getSecond() == Rabbit.earCount + 1) && (exp % 2 == 1));
+        return !((identifier.getSecond() == this.earCount + 1) && (exp % 2 == 1));
     }
 
     /** Decomposes non-liftable Dehn twist into the largest power that does lift and the single power that doesn't **/
@@ -76,6 +134,8 @@ public class DehnTwist extends Rabbit {
     // TODO: override the toString
     @Override
     public String toString() {
+        // TODO: implement toString for when 3 eared things have nicknames
+
         return "D(" + this.identifier.getFirst() + ", " + this.identifier.getSecond() + ")^" + this.getExp();
     }
 
