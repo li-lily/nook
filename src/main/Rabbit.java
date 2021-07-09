@@ -96,10 +96,28 @@ public class Rabbit {
         return new MappingClass(twist_list);
     }
 
+    /** Generates a random Mapping Class**/
+    public MappingClass genRandomWord(int length) {
+        int num_terms = length;
+        List<DehnTwist> twist_list = new ArrayList<>();
+
+        while (num_terms > 0) {
+            DehnTwist next = genRandomTwist();
+            twist_list.add(next);
+            num_terms--;
+        }
+
+        return new MappingClass(twist_list);
+    }
+
     /** THE MAP THAT REALIZES THE VIRTUAL ENDOMORPHISM **/
     public MappingClass lift(List<MappingClass> input) {
         List<MappingClass> lifted_mc;
         //TODO: Implement
         return null;
+    }
+
+    public List<MappingClass> getGenerators() {
+        return this.generators;
     }
 }
