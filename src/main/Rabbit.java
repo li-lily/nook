@@ -87,14 +87,6 @@ public class Rabbit {
         return new MappingClass(twist_list);
     }
 
-    /** Multiplies two mapping classes **/
-    public MappingClass multi(MappingClass mc1, MappingClass mc2) {
-        List<DehnTwist> newTwists = new ArrayList<>(mc1.getWord());
-        newTwists.addAll(mc2.getWord());
-        MappingClass product = new MappingClass(newTwists);
-        return product.concatenate();
-    }
-
     /** THE MAP THAT REALIZES THE VIRTUAL ENDOMORPHISM **/
     public MappingClass lift(List<MappingClass> input) {
         List<MappingClass> lifted_mc;

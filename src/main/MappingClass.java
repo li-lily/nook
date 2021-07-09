@@ -51,6 +51,33 @@ public class MappingClass extends Rabbit {
         return null;
     }
 
+    /** Returns the inverse of a mapping class **/
+    public MappingClass inverse() {
+        List<DehnTwist> inverseList = new ArrayList<>();
+        for (int i = 0; i < this.word.size(); i++) {
+            inverseList.add(0, this.word.get(i).inverse());
+        }
+        return new MappingClass(inverseList);
+    }
+
+    /** Multiplies the current mapping class and another mapping class **/
+    public MappingClass multi(MappingClass other_mc) {
+        List<DehnTwist> newTwists = new ArrayList<>(this.getWord());
+        newTwists.addAll(other_mc.getWord());
+        MappingClass product = new MappingClass(newTwists);
+        return product.concatenate();
+    }
+
+    /** Go CS **/
+    public MappingClass conjugate(MappingClass conjugator) {
+        return conjugator.multi(this.multi(conjugator.inverse()));
+    }
+
+    /** Go CS Part 2 **/
+    public MappingClass commutator(MappingClass other_mc) {
+        return (this.conjugate(other_mc)).multi(other_mc.inverse());
+    }
+
     /** Breaks down Mapping Class into its generators **/
     public void comb() {
         // TODO: implement big boi
