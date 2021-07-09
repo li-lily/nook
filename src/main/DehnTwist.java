@@ -136,6 +136,11 @@ public class DehnTwist extends Rabbit {
         return false;
     }
 
+    /** Returns the inverse of the current Dehn Twist **/
+    public DehnTwist inverse() {
+        return new DehnTwist(this.identifier, -this.exp);
+    }
+
     // TODO: override the toString
     @Override
     public String toString() {
