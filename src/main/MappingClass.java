@@ -115,6 +115,21 @@ public class MappingClass {
         return (this.conjugate(other_mc)).multi(other_mc.inverse());
     }
 
+    /** Function defining when two mapping classes commute**/
+    public boolean commutesWith(MappingClass m) {
+        if (this.equals(m)) {
+            return true;
+        }
+        for (int i = 0; i < this.word.size(); i++) {
+            for (int j = 0; j < m.word.size(); j++) {
+                if (!this.word.get(i).commutesWith(m.word.get(j))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     /** Breaks down Mapping Class into its generators **/
     public void comb() {
         // TODO: implement big boi
