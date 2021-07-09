@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MappingClass extends Rabbit {
+public class MappingClass {
     // a binary encoding of the coset
     // TODO: Encode coset as product of primes, the product of two cosets is lcm/gcf
     private int coset;
@@ -49,8 +49,8 @@ public class MappingClass extends Rabbit {
     public MappingClass concatenate() {
         List<DehnTwist> newList = new ArrayList<>();
         MappingClass temp = new MappingClass(this.getWord());
-        int i = 0;
         while (!temp.isSimplified()) {
+            int i = 0;
             while (i < temp.getWord().size()) {
                 int totalExp = temp.getWord().get(i).getExp();
                 while (i != temp.getWord().size() - 1 && temp.getWord().get(i).getidentifier().equals(temp.getWord().get(i+1).getidentifier())) {
@@ -62,6 +62,8 @@ public class MappingClass extends Rabbit {
                 }
                 i++;
             }
+
+            temp = new MappingClass(newList);
         }
 
         return temp;
