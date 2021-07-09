@@ -112,7 +112,7 @@ public class MappingClass {
 
     /** Go CS Part 2 **/
     public MappingClass commutator(MappingClass other_mc) {
-        return (this.conjugate(other_mc)).multi(other_mc.inverse());
+        return other_mc.conjugate(this).multi(other_mc.inverse());
     }
 
     /** Function defining when two mapping classes commute**/

@@ -48,7 +48,7 @@ public class Rabbit {
 
         //Now we need to add conjugates
         //First we add the conjugates of the single generators
-        for (int i = 0; i < (earCount)*(earCount - 1)*(1./2.) + (earCount - 1); i++) {
+        for (int i = 0; i < (earCount*(1./2.))*(earCount - 1) + (earCount - 1); i++) {
             for (int k = 1; k < earCount + 1; k++) {
                 MappingClass temp = new MappingClass(new DehnTwist(k, earCount + 1, 1));
                 if (!generators.get(i).commutesWith(temp)) {
