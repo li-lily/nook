@@ -3,10 +3,12 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
+
 import static java.lang.Math.abs;
 
 public class Rabbit {
-    public static int earCount = 3;
+    public int earCount = 3;
     private Random resident_random;
     private List<MappingClass> generators;
 
@@ -23,7 +25,26 @@ public class Rabbit {
     }
 
     public List<MappingClass> createGenerators() {
-        // TODO: write this function
+        List<MappingClass> generators = new ArrayList<>();
+        //First add twists that do lift
+        for (int j = 1; j < earCount + 1; j++) {
+            for (int i = 1; i < j; i++) {
+                List<DehnTwist> twist = new ArrayList<>();
+                twist.add(new DehnTwist(i,j,1));
+                generators.add(new MappingClass(twist));
+            }
+        }
+        //Now add squares of twists that don't lift
+        for (int i = 1; i < earCount; i++) {
+            List<DehnTwist> twist = new ArrayList<>();
+            twist.add(new DehnTwist(i,earCount + 1,2));
+            generators.add(new MappingClass(twist));
+        }
+
+        //Now we need to add conjugates
+        //Wait for commuting function
+
+
         return null;
     }
 
@@ -50,10 +71,18 @@ public class Rabbit {
         return new MappingClass(twist_list);
     }
 
+    /** Multiplies two mapping classes **/
+    public MappingClass multi(MappingClass mc1, MappingClass mc2) {
+        List<DehnTwist> newTwists = new ArrayList<>(mc1.getWord());
+        newTwists.addAll(mc2.getWord());
+        MappingClass product = new MappingClass(newTwists);
+        return product.concatenate();
+    }
+
     /** THE MAP THAT REALIZES THE VIRTUAL ENDOMORPHISM **/
     public MappingClass lift(List<MappingClass> input) {
-        // TODO: implement
-
+        List<MappingClass> lifted_mc;
+        //TODO: Implement
         return null;
     }
 }

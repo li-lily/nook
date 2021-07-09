@@ -5,6 +5,7 @@ import java.util.List;
 
 public class MappingClass extends Rabbit {
     // a binary encoding of the coset
+    // TODO: Encode coset as product of primes, the product of two cosets is lcm/gcf
     private int coset;
     private int length;
     private List<DehnTwist> word;
@@ -34,9 +35,19 @@ public class MappingClass extends Rabbit {
         return 0;
     }
 
+    /** Takes in a mapping class and concatenates its list of Dehn Twists **/
+    public MappingClass concatenate() {
+        // TODO: implement
+        return null;
+    }
+
     /** Breaks down Mapping Class into its generators **/
     public void comb() {
         // TODO: implement big boi
         // will need to access generators
+    }
+
+    public List<DehnTwist> getWord() {
+        return this.word;
     }
 }
