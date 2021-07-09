@@ -107,7 +107,8 @@ public class MappingClass {
 
     /** Go CS **/
     public MappingClass conjugate(MappingClass conjugator) {
-        return conjugator.multi(this.multi(conjugator.inverse()));
+        MappingClass temp = this.multi(conjugator.inverse());
+        return conjugator.multi(temp);
     }
 
     /** Go CS Part 2 **/

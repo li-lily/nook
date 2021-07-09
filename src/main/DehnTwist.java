@@ -70,7 +70,7 @@ public class DehnTwist {
                 } else if (identifier.getSecond() == 3) {
                     nickname = 'b';
                 } else if (identifier.getSecond() == 4) {
-                    nickname = 'x';
+                    nickname = 'y';
                 }
             } else if (identifier.getFirst() == 2) {
                 if (identifier.getSecond() == 3) {
@@ -78,8 +78,8 @@ public class DehnTwist {
                 } else if (identifier.getSecond() == 4) {
                     nickname = 'c';
                 }
-            } else if (identifier.getFirst() == 4) {
-                nickname = 'y';
+            } else if (identifier.getFirst() == 3) {
+                nickname = 'x';
             }
         }
     }
@@ -105,7 +105,7 @@ public class DehnTwist {
             } else if (identifier.getSecond() == 3) {
                 nickname = 'b';
             } else if (identifier.getSecond() == 4) {
-                nickname = 'x';
+                nickname = 'y';
             }
         } else if (identifier.getFirst() == 2) {
             if (identifier.getSecond() == 3) {
@@ -113,8 +113,8 @@ public class DehnTwist {
             } else if (identifier.getSecond() == 4) {
                 nickname = 'c';
             }
-        } else if (identifier.getFirst() == 4) {
-            nickname = 'y';
+        } else if (identifier.getFirst() == 3) {
+            nickname = 'x';
         }
     }
 
@@ -130,7 +130,7 @@ public class DehnTwist {
                 } else if (identifier.getSecond() == 3) {
                     nickname = 'b';
                 } else if (identifier.getSecond() == 4) {
-                    nickname = 'x';
+                    nickname = 'y';
                 }
             } else if (identifier.getFirst() == 2) {
                 if (identifier.getSecond() == 3) {
@@ -138,8 +138,8 @@ public class DehnTwist {
                 } else if (identifier.getSecond() == 4) {
                     nickname = 'c';
                 }
-            } else if (identifier.getFirst() == 4) {
-                nickname = 'y';
+            } else if (identifier.getFirst() == 3) {
+                nickname = 'x';
             }
         }
     }
