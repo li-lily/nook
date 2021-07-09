@@ -74,5 +74,9 @@ public class DehnTwist extends Rabbit {
         
     }
     // TODO: override the toString
+    @Override
+    public String toString() {
+        return "D(" + this.identifier.getFirst() + ", " + this.identifier.getSecond() + ")^" + this.getExp();
+    }
 
 }
