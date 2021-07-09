@@ -6,10 +6,10 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DehnTwist extends Rabbit {
+public class DehnTwist {
     private Pair identifier;
     private int exp;
-    private char nickname;
+    private char nickname = 'o';
     private int earCount;
 
     /** Constructor takes in two points and an exponent, plus a rabbit to determine ears **/
@@ -28,6 +28,42 @@ public class DehnTwist extends Rabbit {
         this.earCount = r.earCount;
 
         if (r.earCount == 3) {
+            if (identifier.getFirst() == 1) {
+                if (identifier.getSecond() == 2) {
+                    nickname = 'z';
+                } else if (identifier.getSecond() == 3) {
+                    nickname = 'b';
+                } else if (identifier.getSecond() == 4) {
+                    nickname = 'x';
+                }
+            } else if (identifier.getFirst() == 2) {
+                if (identifier.getSecond() == 3) {
+                    nickname = 'w';
+                } else if (identifier.getSecond() == 4) {
+                    nickname = 'c';
+                }
+            } else if (identifier.getFirst() == 4) {
+                nickname = 'y';
+            }
+        }
+    }
+
+    /** Constructor takes in two points and an exponent, plus a rabbit to determine ears **/
+    public DehnTwist(int first, int second, int exp, int earCount) {
+
+        this.exp = exp;
+
+        if (first == second) {
+            throw new InvalidParameterException("The Dehn Twist input does not surround two distinct points.");
+        } else if (first < second) {
+            this.identifier = new Pair(first, second);
+        } else {
+            this.identifier = new Pair(second, first);
+        }
+
+        this.earCount = earCount;
+
+        if (earCount == 3) {
             if (identifier.getFirst() == 1) {
                 if (identifier.getSecond() == 2) {
                     nickname = 'z';
@@ -141,11 +177,15 @@ public class DehnTwist extends Rabbit {
         return new DehnTwist(this.identifier, -this.exp);
     }
 
+    // TODO: override the equals function and (maybe) the hash
+
     // TODO: override the toString
     @Override
     public String toString() {
         // TODO: implement toString for when 3 eared things have nicknames
-
+        if (nickname != 'o') {
+            return "D(" + nickname + ")^" + this.getExp();
+        }
         return "D(" + this.identifier.getFirst() + ", " + this.identifier.getSecond() + ")^" + this.getExp();
     }
 
