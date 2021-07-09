@@ -42,7 +42,20 @@ public class Rabbit {
         }
 
         //Now we need to add conjugates
-        //Wait for commuting function
+        for (int j = 1; j < earCount + 1; j++) {
+            for (int i = 1; i < j; i++) {
+                for (int k = 1; k < earCount + 1; k++) {
+                    DehnTwist elt = new DehnTwist(i, j, 1);
+                    DehnTwist conjugator = new DehnTwist(i, j, 1);
+                    if (!elt.commutesWith(conjugator)) {
+                        List<DehnTwist> twist = new ArrayList<>();
+                        twist.add(conjugator.inverse());
+                        twist.add(elt);
+                        twist.add(conjugator);
+                    }
+                }
+            }
+        }
 
 
         return null;

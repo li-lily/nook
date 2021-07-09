@@ -97,7 +97,7 @@ public class DehnTwist extends Rabbit {
         return exp;
     }
 
-    private boolean isLiftable() {
+    public boolean isLiftable() {
         return !((identifier.getSecond() == this.earCount + 1) && (exp % 2 == 1));
     }
 
@@ -131,7 +131,7 @@ public class DehnTwist extends Rabbit {
     }
 
     /** Decides whether two Dehn Twists commute with one another **/
-    private boolean commutesWith(DehnTwist t) {
+    public boolean commutesWith(DehnTwist t) {
         // TODO: implement 
         return false;
     }
