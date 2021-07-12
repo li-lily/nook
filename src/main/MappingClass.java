@@ -132,9 +132,32 @@ public class MappingClass {
     }
 
     /** Breaks down Mapping Class into its generators **/
-    public void comb() {
-        // TODO: implement big boi
-        // will need to access generators
+    public List<MappingClass> comb() {
+
+    }
+
+    private List<MappingClass> liftableFactor(MappingClass m) {
+        List<DehnTwist> conjugator = new ArrayList<>();
+        List<MappingClass> factoredMC = new ArrayList<>();
+        for (int i = 0; i < m.getWord().size(); i++) {
+            if (m.getWord().get(i).isLiftable()) {
+                MappingClass conjugatorMC = new MappingClass(conjugator).inverse();
+                MappingClass conjugatedLiftable = m.conjugate(conjugatorMC);
+                m.getWord().remove(i);
+                factoredMC.add(conjugatedLiftable);
+                factoredMC.addAll(liftableFactor(m));
+                return factoredMC;
+            } else {
+                conjugator.add(m.getWord().get(i));
+            }
+        }
+
+        factoredMC.add(m);
+        return factoredMC;
+    }
+
+    private List<MappingClass> nonliftableFactor(MappingClass m) {
+
     }
 
     public List<DehnTwist> getWord() {
