@@ -1,16 +1,23 @@
 package main;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class MappingClass {
     // a binary encoding of the coset
     // TODO: Encode coset as product of primes, the product of two cosets is lcm/gcf
     private int coset;
     private int length;
+    private static int[] primes;
+    private static boolean genPrimes = false;
     private List<DehnTwist> word;
     private HashMap<List<DehnTwist>, Boolean> gen_count;
 
     public MappingClass (List<DehnTwist> word) {
+        if (!genPrimes) {
+            primes = primeList();
+            genPrimes = true;
+        }
         this.word = word;
         this.gen_count = parser();
         this.coset = findCoset(word);
@@ -18,12 +25,39 @@ public class MappingClass {
     }
 
     public MappingClass (DehnTwist twist) {
+        if (!genPrimes) {
+            primes = primeList();
+            genPrimes = true;
+        }
         List<DehnTwist> twist_list = new ArrayList<>();
         twist_list.add(twist);
         this.word = twist_list;
         this.gen_count = parser();
         this.coset = findCoset(word);
         this.length = 0; //TODO: DONT FORGET TO SET LENGTH
+    }
+
+    private int[] primeList() {
+        int[] primes = new int[Rabbit.defaultEarCount + 1];
+        //Padded list of primes with a 1
+        primes[0] = 1;
+        int i = 0;
+        int j = 1;
+        while (i < Rabbit.defaultEarCount) {
+            if (isPrime(j)) {
+                primes[i+1] = j;
+                i++;
+            }
+            j++;
+        }
+        return primes;
+    }
+
+    /**We stole this**/
+    private boolean isPrime(int number) {
+        return number > 1
+                && IntStream.rangeClosed(2, (int) Math.sqrt(number))
+                .noneMatch(n -> (number % n == 0));
     }
 
     public boolean isLiftable() {
@@ -37,10 +71,28 @@ public class MappingClass {
         return null;
     }
 
-    private int findCoset(List<DehnTwist> word) {
-        // use the parsed hashmap to obtain coset
-        // TODO: implement
-        return 0;
+    /**Assigns the coset of the mapping class**/
+    private void findCoset() {
+        HashMap<Integer, Integer> cosets = new HashMap<>();
+        for (DehnTwist d : word) {
+            if (!d.isLiftable()) {
+                int coset_name = d.getidentifier().getFirst();
+                if (cosets.containsKey(coset_name)) {
+                    cosets.put(coset_name, 1 - cosets.get(coset_name));
+                } else  {
+                    cosets.put(coset_name, 1);
+                }
+            }
+        }
+
+        int coset = 1;
+        for (int i : cosets.keySet()) {
+            if (cosets.get(i) != 0) {
+                coset *= primes[i];
+            }
+        }
+
+        this.coset = coset;
     }
 
     /** Takes in a mapping class and concatenates its list of Dehn Twists **/
