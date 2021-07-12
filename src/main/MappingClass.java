@@ -1,8 +1,6 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class MappingClass {
     // a binary encoding of the coset
@@ -133,32 +131,91 @@ public class MappingClass {
 
     /** Breaks down Mapping Class into its generators **/
     public List<MappingClass> comb() {
+        // make the container for all the generators in the end
+        List<MappingClass> result = new ArrayList<>();
+
+        // separate the word into conjugated liftable portion and nonliftable portion
+        List<MappingClass> separatedWord = this.liftableFactor();
+        // pull out the factor with purely nonliftable generators
+        int lastIndex = separatedWord.size() - 1;
+        MappingClass nonliftableFactor = separatedWord.remove(lastIndex);
+        // parse that factor into a list of generators
+        List<MappingClass> nonliftableGenerator = nonliftableFactor.nonliftableFactor();
+
+
+        // parse each of the conjugated liftable factors
+        for (MappingClass MC : separatedWord) {
+            // extract the conjugating element
+            int MCLength = MC.getWord().size();
+            int mid = Math.floorDiv(MCLength, 2);
+
+            // make a mapping class containing just the liftable element
+            MappingClass liftableElem = new MappingClass(MC.getWord().get(mid));
+
+            // make the conjugating element a new list
+            List<DehnTwist> conjugatingTwists = new ArrayList<>();
+            // complete the list of the conjugating element by adding in twists until the middle
+            for (int i = 0; i < mid; i++) {
+                conjugatingTwists.add(MC.getWord().get(i));
+            }
+            MappingClass conjugatingElem = new MappingClass(conjugatingTwists);
+
+
+            // process the conjugating element through the nonliftable factor function
+            if (conjugatingElem.isLiftable()) {
+                // add in the generators for the conjugating element
+                List<MappingClass> conjGenerators = conjugatingElem.nonliftableFactor();
+                result.addAll(conjugatingElem.nonliftableFactor());
+                // add the conjugated liftable term
+                result.add(liftableElem);
+                // add the inverse of the conjugating element
+                result.addAll(invertAll(conjGenerators));
+            } else {
+                // TODO: implement
+                // first get the right coset
+
+                // depending on the coset, add in the correct terms and
+            }
+        }
         return null;
     }
 
-    public List<MappingClass> liftableFactor(MappingClass m) {
+    private static List<MappingClass> invertAll(List<MappingClass> conj) {
+        List<MappingClass> inverted = new ArrayList<>();
+        for (MappingClass term : conj) {
+            inverted.add(term.inverse());
+        }
+        return inverted;
+    }
+
+    public List<MappingClass> liftableFactor() {
         List<DehnTwist> conjugator = new ArrayList<>();
         List<MappingClass> factoredMC = new ArrayList<>();
-        for (int i = 0; i < m.getWord().size(); i++) {
-            if (m.getWord().get(i).isLiftable()) {
-                System.out.println("Ah");
+
+        // iterate through all the Dehn twists looking for liftable items
+        for (int i = 0; i < this.getWord().size(); i++) {
+            if (this.getWord().get(i).isLiftable()) {
                 MappingClass conjugatorMC = new MappingClass(conjugator);
-                MappingClass liftable = new MappingClass(m.getWord().get(i));
+                MappingClass liftable = new MappingClass(this.getWord().get(i));
                 MappingClass conjugatedLiftable = liftable.conjugate(conjugatorMC);
-                m.getWord().remove(i);
+
+                // the rest of the word is the same except without the liftable element
+                this.getWord().remove(i);
                 factoredMC.add(conjugatedLiftable);
-                factoredMC.addAll(liftableFactor(m));
+                factoredMC.addAll(this.liftableFactor());
                 return factoredMC;
             } else {
-                conjugator.add(m.getWord().get(i));
+                // if the current thing is not liftable, we are simply building up the conjugator
+                conjugator.add(this.getWord().get(i));
             }
         }
 
-        factoredMC.add(m);
+        factoredMC.add(this);
         return factoredMC;
     }
 
-    private List<MappingClass> nonliftableFactor(MappingClass m) {
+    private List<MappingClass> nonliftableFactor() {
+        // TODO: implement
         return null;
     }
 
