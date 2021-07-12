@@ -8,8 +8,8 @@ import java.util.stream.Stream;
 import static java.lang.Math.abs;
 
 public class Rabbit {
-    public int earCount = 7;
-    public static int defaultEarCount = 7;
+    public int earCount = 3;
+    public static int defaultEarCount = 3;
     private Random resident_random;
     private List<MappingClass> generators;
 

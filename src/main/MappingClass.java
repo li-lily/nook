@@ -133,16 +133,18 @@ public class MappingClass {
 
     /** Breaks down Mapping Class into its generators **/
     public List<MappingClass> comb() {
-
+        return null;
     }
 
-    private List<MappingClass> liftableFactor(MappingClass m) {
+    public List<MappingClass> liftableFactor(MappingClass m) {
         List<DehnTwist> conjugator = new ArrayList<>();
         List<MappingClass> factoredMC = new ArrayList<>();
         for (int i = 0; i < m.getWord().size(); i++) {
             if (m.getWord().get(i).isLiftable()) {
-                MappingClass conjugatorMC = new MappingClass(conjugator).inverse();
-                MappingClass conjugatedLiftable = m.conjugate(conjugatorMC);
+                System.out.println("Ah");
+                MappingClass conjugatorMC = new MappingClass(conjugator);
+                MappingClass liftable = new MappingClass(m.getWord().get(i));
+                MappingClass conjugatedLiftable = liftable.conjugate(conjugatorMC);
                 m.getWord().remove(i);
                 factoredMC.add(conjugatedLiftable);
                 factoredMC.addAll(liftableFactor(m));
@@ -157,7 +159,7 @@ public class MappingClass {
     }
 
     private List<MappingClass> nonliftableFactor(MappingClass m) {
-
+        return null;
     }
 
     public List<DehnTwist> getWord() {

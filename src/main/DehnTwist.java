@@ -126,6 +126,7 @@ public class DehnTwist {
 
         this.exp = exp;
         this.identifier = identifier;
+        this.earCount = Rabbit.defaultEarCount;
         if (identifier.getEarCount() == 3) {
             if (identifier.getFirst() == 1) {
                 if (identifier.getSecond() == 2) {
@@ -156,7 +157,7 @@ public class DehnTwist {
     }
 
     public boolean isLiftable() {
-        return !((identifier.getSecond() == this.earCount + 1) && (exp % 2 == 1));
+        return !((identifier.getSecond() == this.earCount + 1) && (exp % 2 != 0));
     }
 
     /** Decomposes non-liftable Dehn twist into the largest power that does lift and the single power that doesn't **/
