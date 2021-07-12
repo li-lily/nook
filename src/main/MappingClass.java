@@ -165,7 +165,7 @@ public class MappingClass {
             if (conjugatingElem.isLiftable()) {
                 // add in the generators for the conjugating element
                 List<MappingClass> conjGenerators = conjugatingElem.nonliftableFactor();
-                result.addAll(conjugatingElem.nonliftableFactor());
+                result.addAll(conjGenerators);
                 // add the conjugated liftable term
                 result.add(liftableElem);
                 // add the inverse of the conjugating element
@@ -177,13 +177,15 @@ public class MappingClass {
                 // depending on the coset, add in the correct terms and
             }
         }
-        return null;
+
+        result.addAll(nonliftableGenerator);
+        return result;
     }
 
     private static List<MappingClass> invertAll(List<MappingClass> conj) {
         List<MappingClass> inverted = new ArrayList<>();
         for (MappingClass term : conj) {
-            inverted.add(term.inverse());
+            inverted.add(0, term.inverse());
         }
         return inverted;
     }
