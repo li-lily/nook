@@ -48,10 +48,48 @@ public class DehnTwist {
         }
     }
 
-    /** Constructor takes in two points and an exponent, plus a rabbit to determine ears **/
-    public DehnTwist(int first, int second, int exp, int earCount) {
+//    /** Constructor takes in two points and an exponent, plus a rabbit to determine ears **/
+//    public DehnTwist(int first, int second, int exp, int earCount) {
+//
+//        this.exp = exp;
+//
+//        if (first == second) {
+//            throw new InvalidParameterException("The Dehn Twist input does not surround two distinct points.");
+//        } else if (first < second) {
+//            this.identifier = new Pair(first, second);
+//        } else {
+//            this.identifier = new Pair(second, first);
+//        }
+//
+//        this.earCount = earCount;
+//
+//        if (earCount == 3) {
+//            if (identifier.getFirst() == 1) {
+//                if (identifier.getSecond() == 2) {
+//                    nickname = 'z';
+//                } else if (identifier.getSecond() == 3) {
+//                    nickname = 'b';
+//                } else if (identifier.getSecond() == 4) {
+//                    nickname = 'y';
+//                }
+//            } else if (identifier.getFirst() == 2) {
+//                if (identifier.getSecond() == 3) {
+//                    nickname = 'w';
+//                } else if (identifier.getSecond() == 4) {
+//                    nickname = 'c';
+//                }
+//            } else if (identifier.getFirst() == 3) {
+//                nickname = 'x';
+//            }
+//        }
+//    }
+
+    /** Constructor takes in two points and an exponent with default of 3 ears **/
+    public DehnTwist(int first, int second, int exp) {
 
         this.exp = exp;
+        // warning: HARDCODED
+        this.earCount = Rabbit.defaultEarCount;
 
         if (first == second) {
             throw new InvalidParameterException("The Dehn Twist input does not surround two distinct points.");
@@ -61,9 +99,7 @@ public class DehnTwist {
             this.identifier = new Pair(second, first);
         }
 
-        this.earCount = earCount;
-
-        if (earCount == 3) {
+        if (this.earCount == 3) {
             if (identifier.getFirst() == 1) {
                 if (identifier.getSecond() == 2) {
                     nickname = 'z';
@@ -82,40 +118,7 @@ public class DehnTwist {
                 nickname = 'x';
             }
         }
-    }
 
-    /** Constructor takes in two points and an exponent with default of 3 ears **/
-    public DehnTwist(int first, int second, int exp) {
-
-        this.exp = exp;
-        // warning: HARDCODED
-        this.earCount = 3;
-
-        if (first == second) {
-            throw new InvalidParameterException("The Dehn Twist input does not surround two distinct points.");
-        } else if (first < second) {
-            this.identifier = new Pair(first, second);
-        } else {
-            this.identifier = new Pair(second, first);
-        }
-
-        if (identifier.getFirst() == 1) {
-            if (identifier.getSecond() == 2) {
-                nickname = 'z';
-            } else if (identifier.getSecond() == 3) {
-                nickname = 'b';
-            } else if (identifier.getSecond() == 4) {
-                nickname = 'y';
-            }
-        } else if (identifier.getFirst() == 2) {
-            if (identifier.getSecond() == 3) {
-                nickname = 'w';
-            } else if (identifier.getSecond() == 4) {
-                nickname = 'c';
-            }
-        } else if (identifier.getFirst() == 3) {
-            nickname = 'x';
-        }
     }
 
     /** Extra constructor takes in identifier and an exponent **/

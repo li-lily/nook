@@ -7,7 +7,7 @@ public class Pair {
     private int earCount;
 
     public Pair(int first, int second) {
-        this.earCount = 3;
+        this.earCount = Rabbit.defaultEarCount;
 
         this.first = first % (earCount + 1);
         this.second = second % (earCount + 1);

@@ -8,7 +8,8 @@ import java.util.stream.Stream;
 import static java.lang.Math.abs;
 
 public class Rabbit {
-    public int earCount = 3;
+    public int earCount = 7;
+    public static int defaultEarCount = 7;
     private Random resident_random;
     private List<MappingClass> generators;
 
@@ -33,14 +34,14 @@ public class Rabbit {
             }
         }
         //Now add squares of twists that don't lift
-        for (int i = 1; i < earCount; i++) {
+        for (int i = 2; i < earCount + 1; i++) {
             generators.add(new MappingClass(new DehnTwist(i,earCount + 1,2)));
         }
 
         //Adding commutators of Type II twists
-        for (int i = 1; i < earCount; i++) {
+        for (int i = 2; i < earCount + 1; i++) {
             MappingClass temp1 = new MappingClass(new DehnTwist(i,earCount + 1,1));
-            for (int j = 1; j < i; j++) {
+            for (int j = 2; j < i; j++) {
                 MappingClass temp2 = new MappingClass(new DehnTwist(j, earCount + 1, 1));
                 generators.add(temp1.commutator(temp2));
             }
@@ -49,7 +50,7 @@ public class Rabbit {
         //Now we need to add conjugates
         //First we add the conjugates of the single generators
         for (int i = 0; i < (earCount*(1./2.))*(earCount - 1) + (earCount - 1); i++) {
-            for (int k = 1; k < earCount + 1; k++) {
+            for (int k = 2; k < earCount + 1; k++) {
                 MappingClass temp = new MappingClass(new DehnTwist(k, earCount + 1, 1));
                 if (!generators.get(i).commutesWith(temp)) {
                     generators.add(generators.get(i).conjugate(temp));
@@ -58,10 +59,10 @@ public class Rabbit {
         }
 
         //Finally we add conjugates of commutators
-        for (int i = 1; i < earCount; i++) {
+        for (int i = 2; i < earCount + 1; i++) {
             MappingClass temp1 = new MappingClass(new DehnTwist(i,earCount + 1,1));
-            for (int j = 1; j < i; j++) {
-                for (int k = 1; k < earCount + 1; k++) {
+            for (int j = 2; j < i; j++) {
+                for (int k = 2; k < earCount + 1; k++) {
                     MappingClass temp2 = new MappingClass(new DehnTwist(j, earCount + 1, 1));
                     MappingClass con = new MappingClass(new DehnTwist(k, earCount + 1, 1));
                     generators.add(temp1.commutator(temp2).conjugate(con));
