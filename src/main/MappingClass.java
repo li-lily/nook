@@ -41,21 +41,29 @@ public class MappingClass {
     }
 
     private void preprocessing() {
+        // make a new list to prepare for copying down the same dehn twists
+        List<DehnTwist> replaced_twists = new ArrayList<>();
+
         for (DehnTwist d : this.word) {
             //TODO: Make it so we aren't using defaultEarCount
+
+            // if this is a y
             if (d.getidentifier().getFirst() == 1 && d.getidentifier().getSecond() == Rabbit.defaultEarCount + 1) {
-               int index = word.indexOf(d);
-               word.remove(d);
-               for (int i = 3; i <= Rabbit.defaultEarCount + 1; i++) {
-                   for (int j = 2; j < i; j++) {
-                       word.add(index, new DehnTwist(j, i, -1));
-                       index++;
-                   }
-               }
-               for (int i = 2; i <= Rabbit.defaultEarCount; i++) {
-                   word.add(index, new DehnTwist(1, i, -1));
-               }
+                //int index = word.indexOf(d);
+                //word.remove(d);
+                for (int i = 3; i <= Rabbit.defaultEarCount + 1; i++) {
+                    for (int j = 2; j < i; j++) {
+                        replaced_twists.add(new DehnTwist(j, i, -1));
+                    }
+                }
+                for (int i = 2; i <= Rabbit.defaultEarCount; i++) {
+                    replaced_twists.add(new DehnTwist(1, i, -1));
+                }
+            } else {
+                replaced_twists.add(d);
             }
+
+            this.word = replaced_twists;
         }
     }
 
@@ -204,9 +212,17 @@ public class MappingClass {
         return true;
     }
 
+    public void append( int i, DehnTwist d) {
+        this.word.add(i, d);
+        preprocessing();
+        findCoset();
+    }
+
+    // overloaded without index
     public void append(DehnTwist d) {
         this.word.add(d);
         preprocessing();
+        findCoset();
     }
 
     /** Breaks down Mapping Class into its generators **/
@@ -220,7 +236,8 @@ public class MappingClass {
         int lastIndex = separatedWord.size() - 1;
         MappingClass nonliftableFactor = separatedWord.remove(lastIndex);
         // parse that factor into a list of generators
-        List<MappingClass> nonliftableGenerator = nonliftableFactor.nonliftableFactor();
+        // TODO: this is currently specialized for 3 ears
+        List<MappingClass> nonliftableGenerator = nonliftableFactor.nonliftableFactor3();
 
 
         // parse each of the conjugated liftable factors
@@ -238,24 +255,24 @@ public class MappingClass {
             for (int i = 0; i < mid; i++) {
                 conjugatingTwists.add(MC.getWord().get(i));
             }
-            MappingClass conjugatingElem = new MappingClass(conjugatingTwists);
+            MappingClass conjugating_elem = new MappingClass(conjugatingTwists);
 
 
             // process the conjugating element through the nonliftable factor function
-            if (conjugatingElem.isLiftable()) {
+            if (conjugating_elem.isLiftable()) {
                 // add in the generators for the conjugating element
-                List<MappingClass> conjGenerators = conjugatingElem.nonliftableFactor();
-                result.addAll(conjGenerators);
+                // TODO: this is currently specialized for 3 ears
+                List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
+                result.addAll(conj_generators);
                 // add the conjugated liftable term
                 result.add(liftableElem);
                 // add the inverse of the conjugating element
-                result.addAll(invertAll(conjGenerators));
+                result.addAll(invertAll(conj_generators));
             } else {
                 // TODO: make this not bashed, and finish tomorrow with y replacements
                 // first get the right coset
                 if (coset == 2) {
                     // then it must be a c, so we conjugate by c
-
 
                 } else if (coset == 3) {
                     // then it must be an x, so we conjugate by x
@@ -306,20 +323,59 @@ public class MappingClass {
         return factoredMC;
     }
 
-    private List<MappingClass> nonliftableFactor() {
+    private List<MappingClass> nonliftableFactor3() {
         // TODO: implement
-        // check for invalid imputs
+        // simplify and check for invalid inputs
+        this.simplify();
+
+        if (this.getWord().isEmpty()) {
+            return new ArrayList<>();
+        }
+
         if (!this.nonliftableValid()) {
             throw new InvalidParameterException("the portion with pure nonliftable factors is impure");
         }
 
+        List<MappingClass> result = new ArrayList<>();
 
-        return null;
+        DehnTwist first_elt = this.getWord().remove(0);
+        DehnTwist second_elt = this.getWord().remove(0);
+        DehnTwist third_elt = this.getWord().remove(0);
+
+        if (first_elt.getExp() == 2 || first_elt.getExp() == -2) {
+            // if the first twist is a square, separate it out into the results
+            result.add(new MappingClass(first_elt));
+        } else if (third_elt.getExp() == - first_elt.getExp()) {
+            // in this case, we make a commutator out of the first two things
+            MappingClass first = new MappingClass(first_elt);
+            MappingClass second = new MappingClass(second_elt);
+            result.add(first.commutator(second));
+
+            // and append a copy of the second elt
+            this.append(0, second_elt);
+        } else if (third_elt.getExp() == first_elt.getExp()) {
+            // in this case, we first extract a commutator as usual
+            MappingClass first = new MappingClass(first_elt);
+            MappingClass second = new MappingClass(second_elt);
+            result.add(first.commutator(second));
+
+            // then we extract a conjugate of the square of the first element by the second element
+            DehnTwist first_squared_twist = new DehnTwist(first_elt.getidentifier(), first_elt.getExp() * 2);
+            MappingClass first_squared = new MappingClass(first_squared_twist);
+            result.add(first_squared.conjugate(second));
+
+            // then we append a copy of the second elt
+            this.append(0, second_elt);
+        }
+
+        // call the function recursively
+        result.addAll(this.nonliftableFactor3());
+        return result;
     }
 
     private boolean nonliftableValid() {
         for (DehnTwist t : this.getWord()) {
-            if (t.isLiftable() || t.getExp() > 1 || t.getExp() < -1) {
+            if (t.isLiftable() || t.getExp() > 2 || t.getExp() < -2) {
                 return false;
             }
         }
