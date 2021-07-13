@@ -21,6 +21,7 @@ public class MappingClass {
         }
         this.word = word;
         this.gen_count = parser();
+        preprocessing();
         findCoset();
         this.length = 0; //TODO: DONT FORGET TO SET LENGTH
     }
@@ -34,8 +35,28 @@ public class MappingClass {
         twist_list.add(twist);
         this.word = twist_list;
         this.gen_count = parser();
+        preprocessing();
         findCoset();
         this.length = 0; //TODO: DONT FORGET TO SET LENGTH
+    }
+
+    private void preprocessing() {
+        for (DehnTwist d : this.word) {
+            //TODO: Make it so we aren't using defaultEarCount
+            if (d.getidentifier().getFirst() == 1 && d.getidentifier().getSecond() == Rabbit.defaultEarCount + 1) {
+               int index = word.indexOf(d);
+               word.remove(d);
+               for (int i = 3; i <= Rabbit.defaultEarCount + 1; i++) {
+                   for (int j = 2; j < i; j++) {
+                       word.add(index, new DehnTwist(j, i, -1));
+                       index++;
+                   }
+               }
+               for (int i = 2; i <= Rabbit.defaultEarCount; i++) {
+                   word.add(index, new DehnTwist(1, i, -1));
+               }
+            }
+        }
     }
 
 
@@ -78,7 +99,7 @@ public class MappingClass {
         HashMap<Integer, Integer> cosets = new HashMap<>();
         for (DehnTwist d : word) {
             if (!d.isLiftable()) {
-                int coset_name = d.getidentifier().getFirst();
+                int coset_name = d.getidentifier().getFirst() - 1;
                 if (cosets.containsKey(coset_name)) {
                     cosets.put(coset_name, 1 - cosets.get(coset_name));
                 } else  {
@@ -227,14 +248,14 @@ public class MappingClass {
             } else {
                 // TODO: make this not bashed, and finish tomorrow with y replacements
                 // first get the right coset
-                if (coset == 3) {
+                if (coset == 2) {
                     // then it must be a c, so we conjugate by c
 
 
-                } else if (coset == 5) {
+                } else if (coset == 3) {
                     // then it must be an x, so we conjugate by x
 
-                } else if (coset == 15 || coset == 2) {
+                } else if (coset == 6) {
                     // then it must be cx
 
                 }
