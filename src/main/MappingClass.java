@@ -1,5 +1,6 @@
 package main;
 
+import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -20,7 +21,7 @@ public class MappingClass {
         }
         this.word = word;
         this.gen_count = parser();
-        this.coset = findCoset(word);
+        findCoset();
         this.length = 0; //TODO: DONT FORGET TO SET LENGTH
     }
 
@@ -33,9 +34,10 @@ public class MappingClass {
         twist_list.add(twist);
         this.word = twist_list;
         this.gen_count = parser();
-        this.coset = findCoset(word);
+        findCoset();
         this.length = 0; //TODO: DONT FORGET TO SET LENGTH
     }
+
 
     private int[] primeList() {
         int[] primes = new int[Rabbit.defaultEarCount + 1];
@@ -61,7 +63,7 @@ public class MappingClass {
     }
 
     public boolean isLiftable() {
-        return (coset == 1);
+        return (this.coset == 1);
     }
 
     private HashMap<List<DehnTwist>, Boolean> parser() {
@@ -223,9 +225,19 @@ public class MappingClass {
                 // add the inverse of the conjugating element
                 result.addAll(invertAll(conjGenerators));
             } else {
-                // TODO: implement
+                // TODO: make this not bashed, and finish tomorrow with y replacements
                 // first get the right coset
+                if (coset == 3) {
+                    // then it must be a c, so we conjugate by c
 
+
+                } else if (coset == 5) {
+                    // then it must be an x, so we conjugate by x
+
+                } else if (coset == 15 || coset == 2) {
+                    // then it must be cx
+
+                }
                 // depending on the coset, add in the correct terms and
             }
         }
@@ -270,11 +282,30 @@ public class MappingClass {
 
     private List<MappingClass> nonliftableFactor() {
         // TODO: implement
+        // check for invalid imputs
+        if (!this.nonliftableValid()) {
+            throw new InvalidParameterException("the portion with pure nonliftable factors is impure");
+        }
+
+
         return null;
+    }
+
+    private boolean nonliftableValid() {
+        for (DehnTwist t : this.getWord()) {
+            if (t.isLiftable() || t.getExp() > 1 || t.getExp() < -1) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<DehnTwist> getWord() {
         return this.word;
+    }
+
+    public int getCoset() {
+        return this.coset;
     }
 
     @Override
