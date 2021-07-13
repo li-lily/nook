@@ -204,6 +204,11 @@ public class MappingClass {
         return true;
     }
 
+    public void append(DehnTwist d) {
+        this.word.add(d);
+        preprocessing();
+    }
+
     /** Breaks down Mapping Class into its generators **/
     public List<MappingClass> comb() {
         // make the container for all the generators in the end
