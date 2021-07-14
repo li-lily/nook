@@ -120,8 +120,7 @@ public class Rabbit {
             lifted_mc.add(liftingMap.get(mc));
         }
 
-        return null;
-
+        return MappingClass.multiAll(lifted_mc);
     }
 
     //TODO: Implement this

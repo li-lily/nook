@@ -189,12 +189,12 @@ public class MappingClass {
         return product.simplify();
     }
 
-    public MappingClass multiAll(List<MappingClass> mc_list) {
+    public static MappingClass multiAll(List<MappingClass> mc_list) {
         MappingClass final_mc = mc_list.get(0);
         for (MappingClass mc : mc_list) {
-            
+            final_mc = final_mc.multi(mc);
         }
-        return null;
+        return final_mc;
     }
 
     /** Go CS **/
