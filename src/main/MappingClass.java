@@ -339,7 +339,19 @@ public class MappingClass {
 
             // TODO: add a condition here that if this is already just a conjugate then we don't do anything
             if (conjugating_elem.getWord().size() == 1) {
-                result.add(MC);
+                DehnTwist leading = conjugating_elem.getWord().get(0);
+                if (leading.getExp() == -1) {
+                    // first add a -2 power of the conjugating elt
+                    DehnTwist conj_front = new DehnTwist(leading.getidentifier(), -2);
+                    // add a power 2 at the end
+                    DehnTwist conj_back = new DehnTwist(leading.getidentifier(), 2);
+                    result.add(new MappingClass(conj_front));
+                    // conjugate by the inverse
+                    result.add(liftableElem.conjugate(conjugating_elem.inverse()));
+                    result.add(new MappingClass(conj_back));
+                } else {
+                    result.add(MC);
+                }
             } else if (conjugating_elem.isLiftable()) {
                 // process the conjugating element through the nonliftable factor function
                 // add in the generators for the conjugating element
@@ -462,6 +474,20 @@ public class MappingClass {
 
         DehnTwist second_elt = this.getWord().remove(0);
         DehnTwist third_elt = this.getWord().remove(0);
+        boolean flag = false;
+
+        if (first_elt.getExp() < 0) {
+            result.add(new MappingClass(new DehnTwist(first_elt.getidentifier(), -2)));
+            first_elt = first_elt.inverse();
+            // this.append(0, first_elt.inverse());
+        }
+
+        if (second_elt.getExp() < 0) {
+            DehnTwist second_sqr = new DehnTwist(second_elt.getidentifier(), -2);
+            result.add(new MappingClass(second_sqr).conjugate(new MappingClass(first_elt)));
+            second_elt = second_elt.inverse();
+            flag = true;
+        }
 
         if (third_elt.getExp() == - first_elt.getExp()) {
             // in this case, we make a commutator out of the first two things
@@ -484,6 +510,11 @@ public class MappingClass {
 
             // then we append a copy of the second elt
             this.append(0, second_elt);
+        }
+
+        // if we did the xc^-1x^-1c shenanigans we must add in a new c^2
+        if (flag) {
+            result.add(new MappingClass(new DehnTwist(second_elt.getidentifier(), 2)));
         }
 
         // call the function recursively

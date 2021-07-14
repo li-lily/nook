@@ -124,7 +124,7 @@ public class Rabbit {
                 lifted_mc.add(liftingMap.get(mc));
             } else if (liftingMap.containsKey(mc.inverse())) {
                 // if its inverse is in the map
-                lifted_mc.add(liftingMap.get(mc).inverse());
+                lifted_mc.add(liftingMap.get(mc.inverse()).inverse());
             } else {
                 // uh oh
                 System.out.println(mc);
