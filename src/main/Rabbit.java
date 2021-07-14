@@ -117,6 +117,30 @@ public class Rabbit {
     /** THE MAP THAT REALIZES THE VIRTUAL ENDOMORPHISM **/
     /** Note that this function heavily relies on the order the generators were created **/
     public MappingClass lift(MappingClass input) {
+        // check if it's actually liftable
+        if (input.isLiftable()) {
+            return liftableHelper(input);
+        } else if (input.getCoset() == 2) {
+            // TODO: not hardcode
+            DehnTwist c = new DehnTwist(2, 4, 1);
+            input.append(0, c.inverse());
+            return liftableHelper(input).multi(new MappingClass(c));
+        } else if (input.getCoset() == 3) {
+            DehnTwist x = new DehnTwist(3, 4, 1);
+            input.append(0, x.inverse());
+            return liftableHelper(input).multi(new MappingClass(x));
+        } else if (input.getCoset() == 6) {
+            DehnTwist x = new DehnTwist(3, 4, 1);
+            DehnTwist c = new DehnTwist(2, 4, 1);
+            input.append(0, c.inverse());
+            input.append(0, x.inverse());
+            return liftableHelper(input).multi(new MappingClass(c)).multi(new MappingClass(x));
+        } else {
+            throw new InvalidParameterException("UH OH this is not a valid coset I don't know what to borrow by");
+        }
+    }
+
+    private MappingClass liftableHelper(MappingClass input) {
         List<MappingClass> lifted_mc = new ArrayList<>();
         List<MappingClass> before_lifting = input.parser().comb();
         System.out.println(before_lifting.size());

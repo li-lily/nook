@@ -464,6 +464,11 @@ public class MappingClass {
         List<MappingClass> result = new ArrayList<>();
 
         DehnTwist first_elt = this.getWord().remove(0);
+        // if the element itself is liftable
+        if (this.getWord().size() == 0) {
+            result.add(new MappingClass(first_elt));
+            return result;
+        }
         if (first_elt.getExp() == 2 || first_elt.getExp() == -2) {
             // if the first twist is a square, separate it out into the results
             result.add(new MappingClass(first_elt));
