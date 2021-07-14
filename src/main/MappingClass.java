@@ -186,6 +186,13 @@ public class MappingClass {
         return product.simplify();
     }
 
+    public MappingClass multiAll(List<MappingClass> mc_list) {
+        MappingClass final_mc = mc_list.get(0);
+        for (MappingClass mc : mc_list) {
+            
+        }
+    }
+
     /** Go CS **/
     public MappingClass conjugate(MappingClass conjugator) {
         MappingClass temp = this.multi(conjugator.inverse());
