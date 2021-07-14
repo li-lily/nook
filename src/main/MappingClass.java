@@ -325,14 +325,15 @@ public class MappingClass {
                     // Make a mapping class by first conjugating by x
                     List<DehnTwist> x_twist = new ArrayList<>();
                     x_twist.add(x);
-                    MappingClass cx = new MappingClass(x_twist);
+                    MappingClass just_x = new MappingClass(x_twist);
+                    liftableElem = liftableElem.conjugate(just_x);
 
                     // and then conjugate by c
                     List<DehnTwist> c_twist = new ArrayList<>();
                     c_twist.add(c);
                     MappingClass just_c = new MappingClass(c_twist);
-                    cx.conjugate(just_c);
-                    result.add(cx);
+                    liftableElem = liftableElem.conjugate(just_c);
+                    result.add(liftableElem);
                     result.addAll(invertAll(conj_generators));
                 }
                 // depending on the coset, add in the correct terms and
