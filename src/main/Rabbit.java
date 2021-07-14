@@ -116,6 +116,7 @@ public class Rabbit {
     /** Note that this function heavily relies on the order the generators were created **/
     public MappingClass lift(List<MappingClass> input) {
         List<MappingClass> lifted_mc = new ArrayList<>();
+        input = input.parse();
         for (MappingClass mc : input) {
             lifted_mc.add(liftingMap.get(mc));
         }
