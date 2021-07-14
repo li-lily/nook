@@ -65,6 +65,9 @@ public class MappingClass {
 
             this.word = replaced_twists;
         }
+
+        // separate out the odd powers into odd powers and even powers
+        // TODO: implement this
     }
 
 
@@ -191,6 +194,7 @@ public class MappingClass {
         for (MappingClass mc : mc_list) {
             
         }
+        return null;
     }
 
     /** Go CS **/
@@ -278,15 +282,41 @@ public class MappingClass {
             } else {
                 // TODO: make this not bashed, and finish tomorrow with y replacements
                 // first get the right coset
+                DehnTwist c = new DehnTwist(2, 4, 1);
+                DehnTwist x = new DehnTwist(3, 4, 1);
+
                 if (coset == 2) {
-                    // then it must be a c, so we conjugate by c
+                    // then it must be a c, so we append c^-1 to the end of the conjugating element
+                    conjugating_elem.append(c.inverse());
+                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
+                    result.addAll(conj_generators);
 
+                    // now we conjugate the liftable thing by c
+                    result.add(liftableElem.conjugate(new MappingClass(c)));
+
+                    // then add in all the inverses
+                    result.addAll(invertAll(conj_generators));
                 } else if (coset == 3) {
-                    // then it must be an x, so we conjugate by x
-
+                    // then it must be an x, so we conjugate by x^-1, same as above
+                    conjugating_elem.append(x.inverse());
+                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
+                    result.addAll(conj_generators);
+                    result.add(liftableElem.conjugate(new MappingClass(x)));
+                    result.addAll(invertAll(conj_generators));
                 } else if (coset == 6) {
                     // then it must be cx
+                    conjugating_elem.append(x.inverse());
+                    conjugating_elem.append(c.inverse());
+                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
+                    result.addAll(conj_generators);
 
+                    // Make a mapping class of cx
+                    List<DehnTwist> cx_twist = new ArrayList<>();
+                    cx_twist.add(c);
+                    cx_twist.add(x);
+                    MappingClass cx = new MappingClass(cx_twist);
+                    result.add(liftableElem.conjugate(cx));
+                    result.addAll(invertAll(conj_generators));
                 }
                 // depending on the coset, add in the correct terms and
             }
@@ -330,8 +360,7 @@ public class MappingClass {
         return factoredMC;
     }
 
-    private List<MappingClass> nonliftableFactor3() {
-        // TODO: implement
+    public List<MappingClass> nonliftableFactor3() {
         // simplify and check for invalid inputs
         this.simplify();
 
