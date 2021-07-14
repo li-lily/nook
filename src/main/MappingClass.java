@@ -248,11 +248,12 @@ public class MappingClass {
     /**This function is ONLY VALID for the THREE-EARED CASE**/
     public List<MappingClass> smartAdd(List<MappingClass> list_mc, MappingClass m) {
         if (m.getWord().size() == 1) {
-            int e = Math.abs(m.getWord().get(0).getExp());
-            int sign = Math.round(Math.signum(m.getWord().get(0).getExp()));
-            if (m.isLiftable()) {
+            DehnTwist d = m.getWord().get(0);
+            int e = Math.abs(d.getExp());
+            int sign = Math.round(Math.signum(d.getExp()));
+            if (d.isLiftable()) {
                 for (int i = 0; i < e; i++) {
-                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(0).getidentifier(), sign)));
+                    list_mc.add(new MappingClass(new DehnTwist(d.getidentifier(), sign)));
                 }
             } else {
                 for (int i = 0; i < e/2; i++) {
@@ -264,9 +265,10 @@ public class MappingClass {
             }
         } else if (m.getWord().size() == 3) {
             list_mc.add(new MappingClass(m.getWord().get(0)));
+            DehnTwist d = m.getWord().get(1);
             int e = Math.abs(m.getWord().get(1).getExp());
             int sign = Math.round(Math.signum(m.getWord().get(1).getExp()));
-            if (m.isLiftable()) {
+            if (d.isLiftable()) {
                 for (int i = 0; i < e; i++) {
                     list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(1).getidentifier(), sign)));
                 }
@@ -282,9 +284,10 @@ public class MappingClass {
         } else if (m.getWord().size() == 5) {
             list_mc.add(new MappingClass(m.getWord().get(0)));
             list_mc.add(new MappingClass(m.getWord().get(1)));
+            DehnTwist d = m.getWord().get(2);
             int e = Math.abs(m.getWord().get(2).getExp());
             int sign = Math.round(Math.signum(m.getWord().get(2).getExp()));
-            if (m.isLiftable()) {
+            if (d.isLiftable()) {
                 for (int i = 0; i < e; i++) {
                     list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(2).getidentifier(), sign)));
                 }
