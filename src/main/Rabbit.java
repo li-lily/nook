@@ -215,7 +215,7 @@ public class Rabbit {
         if (this.earCount == 3) {
             MappingClass temp = new MappingClass(new DehnTwist(2, earCount + 1, 1));
             temp.append(new DehnTwist(3, earCount + 1, 1));
-            lift.put(generators.get(1).conjugate(temp), new MappingClass(new DehnTwist(1,1,0)));
+            lift.put(generators.get(1).conjugate(temp), new MappingClass(new DehnTwist(1,2,0)));
             MappingClass y = new MappingClass(new DehnTwist(1, 4, 1));
             MappingClass b = new MappingClass(new DehnTwist(1, 3, 1));
             lift.put(generators.get(2).conjugate(temp), new MappingClass(new DehnTwist(3, 4, 1)).conjugate(y).conjugate(b));
