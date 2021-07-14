@@ -1,5 +1,6 @@
 package main;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,11 +115,19 @@ public class Rabbit {
 
     /** THE MAP THAT REALIZES THE VIRTUAL ENDOMORPHISM **/
     /** Note that this function heavily relies on the order the generators were created **/
-    public MappingClass lift(List<MappingClass> input) {
+    public MappingClass lift(MappingClass input) {
         List<MappingClass> lifted_mc = new ArrayList<>();
-        input = input.parse();
-        for (MappingClass mc : input) {
-            lifted_mc.add(liftingMap.get(mc));
+        for (MappingClass mc : input.parser().comb()) {
+            // if it's in the map
+            if (liftingMap.containsKey(mc)) {
+                lifted_mc.add(liftingMap.get(mc));
+            } else if (liftingMap.containsKey(mc.inverse())) {
+                // if its inverse is in the map
+                lifted_mc.add(liftingMap.get(mc).inverse());
+            } else {
+                // uh oh
+                throw new InvalidParameterException("UH OH the generator is not in the map *gasp*");
+            }
         }
 
         return MappingClass.multiAll(lifted_mc);
