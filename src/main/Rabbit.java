@@ -26,6 +26,7 @@ public class Rabbit {
     public Rabbit() {
         this.resident_random = new Random(200);
         this.generators = createGenerators();
+        createMap();
     }
 
     public List<MappingClass> createGenerators() {

@@ -13,7 +13,7 @@ public class Experiments {
     private static MappingClass runExp(MappingClass MC) {
         int prev_length = MC.getLength();
         while (cond()) {
-            MC = MC.lift();
+            //MC = MC.lift();
 
         }
 
