@@ -12,7 +12,7 @@ public class MappingClass {
     private static int[] primes;
     private static boolean genPrimes = false;
     private List<DehnTwist> word;
-    private HashMap<List<DehnTwist>, Boolean> gen_count;
+    //private HashMap<List<DehnTwist>, Boolean> gen_count;
 
     public MappingClass (List<DehnTwist> word) {
         if (!genPrimes) {
@@ -20,7 +20,7 @@ public class MappingClass {
             genPrimes = true;
         }
         this.word = word;
-        this.gen_count = parser();
+        //this.gen_count = parser();
         preprocessing();
         findCoset();
         this.length = 0; //TODO: DONT FORGET TO SET LENGTH
@@ -34,7 +34,7 @@ public class MappingClass {
         List<DehnTwist> twist_list = new ArrayList<>();
         twist_list.add(twist);
         this.word = twist_list;
-        this.gen_count = parser();
+        //this.gen_count = parser();
         preprocessing();
         findCoset();
         this.length = 0; //TODO: DONT FORGET TO SET LENGTH
@@ -98,11 +98,10 @@ public class MappingClass {
         return (this.coset == 1);
     }
 
-    private HashMap<List<DehnTwist>, Boolean> parser() {
-        // returns the result of breaking into generators
-        // ALSO MAKE SURE TO SET THE LENGTH
-        //TODO: implement
-        return null;
+    private void parser() {
+        List<DehnTwist> result_parsed = new ArrayList<>();
+        //for (DehnTwist d : )
+
     }
 
     /**Assigns the coset of the mapping class**/
@@ -239,10 +238,64 @@ public class MappingClass {
         findCoset();
     }
 
-    /** This is THE FUNCTION **/
-    public MappingClass lift() {
-        // TODO: implement
-        return null;
+    /**This function is ONLY VALID for the THREE-EARED CASE**/
+    public List<MappingClass> smartAdd(List<MappingClass> list_mc, MappingClass m) {
+        if (m.getWord().size() == 1) {
+            int e = Math.abs(m.getWord().get(0).getExp());
+            int sign = Math.round(Math.signum(m.getWord().get(0).getExp()));
+            if (m.isLiftable()) {
+                for (int i = 0; i < e; i++) {
+                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(0).getidentifier(), sign)));
+                }
+            } else {
+                for (int i = 0; i < e/2; i++) {
+                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(0).getidentifier(), 2*sign)));
+                }
+                if (e % 2 != 0) {
+                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(0).getidentifier(), sign)));
+                }
+            }
+        } else if (m.getWord().size() == 3) {
+            list_mc.add(new MappingClass(m.getWord().get(0)));
+            int e = Math.abs(m.getWord().get(1).getExp());
+            int sign = Math.round(Math.signum(m.getWord().get(1).getExp()));
+            if (m.isLiftable()) {
+                for (int i = 0; i < e; i++) {
+                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(1).getidentifier(), sign)));
+                }
+            } else {
+                for (int i = 0; i < e/2; i++) {
+                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(1).getidentifier(), 2*sign)));
+                }
+                if (e % 2 != 0) {
+                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(1).getidentifier(), sign)));
+                }
+            }
+            list_mc.add(new MappingClass(m.getWord().get(2)));
+        } else if (m.getWord().size() == 5) {
+            list_mc.add(new MappingClass(m.getWord().get(0)));
+            list_mc.add(new MappingClass(m.getWord().get(1)));
+            int e = Math.abs(m.getWord().get(2).getExp());
+            int sign = Math.round(Math.signum(m.getWord().get(2).getExp()));
+            if (m.isLiftable()) {
+                for (int i = 0; i < e; i++) {
+                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(2).getidentifier(), sign)));
+                }
+            } else {
+                for (int i = 0; i < e/2; i++) {
+                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(2).getidentifier(), 2*sign)));
+                }
+                if (e % 2 != 0) {
+                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(2).getidentifier(), sign)));
+                }
+            }
+            list_mc.add(new MappingClass(m.getWord().get(3)));
+            list_mc.add(new MappingClass(m.getWord().get(4)));
+        } else {
+            throw new InvalidParameterException("Input is not a conjugate of the form we want");
+        }
+
+        return list_mc;
     }
 
     /** Breaks down Mapping Class into its generators **/
