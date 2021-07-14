@@ -183,8 +183,8 @@ public class Rabbit {
             }
         }
 
-        for (int i = 1; i < earCount + 1; i++) {
-            for (int k = 1; k < i; k++) {
+        for (int i = 2; i < earCount + 1; i++) {
+            for (int k = 2; k < i; k++) {
                 lift.put(new MappingClass(new DehnTwist(i, earCount + 1 , 2)).conjugate(new MappingClass(new DehnTwist(k, earCount + 1, 1))),
                         new MappingClass(new DehnTwist(1, k, 1)));
             }
