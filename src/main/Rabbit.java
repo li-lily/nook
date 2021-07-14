@@ -173,7 +173,7 @@ public class Rabbit {
                     int first = mc.getWord().get(0).getidentifier().getFirst();
                     int second = mc.getWord().get(0).getidentifier().getSecond();
                     if (first == k || second == k) {
-                        lift.put(mc.conjugate(temp), new MappingClass(new DehnTwist(1, 1, 0)));
+                        lift.put(mc.conjugate(temp), new MappingClass(new DehnTwist(1, 2, 0)));
                         //Is there a better way to do this?
                     } else {
                         lift.put(mc.conjugate(temp),
