@@ -138,9 +138,9 @@ public class MappingClass {
     /** Takes in a mapping class and concatenates its list of Dehn Twists **/
     public MappingClass simplify() {
         // TODO: SET LENGTH
-        List<DehnTwist> newList = new ArrayList<>();
         MappingClass temp = new MappingClass(this.getWord());
         while (!temp.isSimplified()) {
+            List<DehnTwist> newList = new ArrayList<>();
             int i = 0;
             while (i < temp.getWord().size()) {
                 int totalExp = temp.getWord().get(i).getExp();

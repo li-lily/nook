@@ -118,7 +118,9 @@ public class Rabbit {
     /** Note that this function heavily relies on the order the generators were created **/
     public MappingClass lift(MappingClass input) {
         List<MappingClass> lifted_mc = new ArrayList<>();
-        for (MappingClass mc : input.parser().comb()) {
+        List<MappingClass> before_lifting = input.parser().comb();
+        System.out.println(before_lifting.size());
+        for (MappingClass mc : before_lifting) {
             // if it's in the map
             if (liftingMap.containsKey(mc)) {
                 lifted_mc.add(liftingMap.get(mc));
