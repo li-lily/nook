@@ -265,45 +265,69 @@ public class MappingClass {
                 }
             }
         } else if (m.getWord().size() == 3) {
-            list_mc.add(new MappingClass(m.getWord().get(0)));
             DehnTwist d = m.getWord().get(1);
             DehnTwist base = new DehnTwist(d.getidentifier(), 1);
             int e = Math.abs(m.getWord().get(1).getExp());
             int sign = Math.round(Math.signum(m.getWord().get(1).getExp()));
             if (base.isLiftable()) {
                 for (int i = 0; i < e; i++) {
-                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(1).getidentifier(), sign)));
+                    List<DehnTwist> new_mc = new ArrayList<>();
+                    new_mc.add(m.getWord().get(0));
+                    new_mc.add(new DehnTwist(m.getWord().get(1).getidentifier(), sign));
+                    new_mc.add(m.getWord().get(2));
+                    list_mc.add(new MappingClass(new_mc));
                 }
             } else {
                 for (int i = 0; i < e/2; i++) {
-                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(1).getidentifier(), 2*sign)));
+                    List<DehnTwist> new_mc = new ArrayList<>();
+                    new_mc.add(m.getWord().get(0));
+                    new_mc.add(new DehnTwist(m.getWord().get(1).getidentifier(), 2*sign));
+                    new_mc.add(m.getWord().get(2));
+                    list_mc.add(new MappingClass(new_mc));
                 }
                 if (e % 2 != 0) {
-                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(1).getidentifier(), sign)));
+                    List<DehnTwist> new_mc = new ArrayList<>();
+                    new_mc.add(m.getWord().get(0));
+                    new_mc.add(new DehnTwist(m.getWord().get(1).getidentifier(), sign));
+                    new_mc.add(m.getWord().get(2));
+                    list_mc.add(new MappingClass(new_mc));
                 }
             }
-            list_mc.add(new MappingClass(m.getWord().get(2)));
         } else if (m.getWord().size() == 5) {
-            list_mc.add(new MappingClass(m.getWord().get(0)));
-            list_mc.add(new MappingClass(m.getWord().get(1)));
             DehnTwist d = m.getWord().get(2);
             DehnTwist base = new DehnTwist(d.getidentifier(), 1);
             int e = Math.abs(m.getWord().get(2).getExp());
             int sign = Math.round(Math.signum(m.getWord().get(2).getExp()));
             if (base.isLiftable()) {
                 for (int i = 0; i < e; i++) {
-                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(2).getidentifier(), sign)));
+                    List<DehnTwist> new_mc = new ArrayList<>();
+                    new_mc.add(m.getWord().get(0));
+                    new_mc.add(m.getWord().get(1));
+                    new_mc.add(new DehnTwist(m.getWord().get(2).getidentifier(), sign));
+                    new_mc.add(m.getWord().get(3));
+                    new_mc.add(m.getWord().get(4));
+                    list_mc.add(new MappingClass(new_mc));
                 }
             } else {
                 for (int i = 0; i < e/2; i++) {
-                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(2).getidentifier(), 2*sign)));
+                    List<DehnTwist> new_mc = new ArrayList<>();
+                    new_mc.add(m.getWord().get(0));
+                    new_mc.add(m.getWord().get(1));
+                    new_mc.add(new DehnTwist(m.getWord().get(2).getidentifier(), 2*sign));
+                    new_mc.add(m.getWord().get(3));
+                    new_mc.add(m.getWord().get(4));
+                    list_mc.add(new MappingClass(new_mc));
                 }
                 if (e % 2 != 0) {
-                    list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(2).getidentifier(), sign)));
+                    List<DehnTwist> new_mc = new ArrayList<>();
+                    new_mc.add(m.getWord().get(0));
+                    new_mc.add(m.getWord().get(1));
+                    new_mc.add(new DehnTwist(m.getWord().get(2).getidentifier(), sign));
+                    new_mc.add(m.getWord().get(3));
+                    new_mc.add(m.getWord().get(4));
+                    list_mc.add(new MappingClass(new_mc));
                 }
             }
-            list_mc.add(new MappingClass(m.getWord().get(3)));
-            list_mc.add(new MappingClass(m.getWord().get(4)));
         } else {
             throw new InvalidParameterException("Input is not a conjugate of the form we want");
         }
