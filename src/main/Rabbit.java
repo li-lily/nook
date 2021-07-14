@@ -127,6 +127,7 @@ public class Rabbit {
                 lifted_mc.add(liftingMap.get(mc).inverse());
             } else {
                 // uh oh
+                System.out.println(mc);
                 throw new InvalidParameterException("UH OH the generator is not in the map *gasp*");
             }
         }

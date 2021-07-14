@@ -197,8 +197,8 @@ public class MappingClass {
 
     public static MappingClass multiAll(List<MappingClass> mc_list) {
         MappingClass final_mc = mc_list.get(0);
-        for (MappingClass mc : mc_list) {
-            final_mc = final_mc.multi(mc);
+        for (int i = 1; i < mc_list.size(); i++) {
+            final_mc = final_mc.multi(mc_list.get(i));
         }
         return final_mc;
     }
@@ -545,6 +545,11 @@ public class MappingClass {
         }
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
     }
 
     @Override
