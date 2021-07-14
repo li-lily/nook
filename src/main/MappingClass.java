@@ -322,12 +322,17 @@ public class MappingClass {
                     List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
                     result.addAll(conj_generators);
 
-                    // Make a mapping class of cx
-                    List<DehnTwist> cx_twist = new ArrayList<>();
-                    cx_twist.add(c);
-                    cx_twist.add(x);
-                    MappingClass cx = new MappingClass(cx_twist);
-                    result.add(liftableElem.conjugate(cx));
+                    // Make a mapping class by first conjugating by x
+                    List<DehnTwist> x_twist = new ArrayList<>();
+                    x_twist.add(x);
+                    MappingClass cx = new MappingClass(x_twist);
+
+                    // and then conjugate by c
+                    List<DehnTwist> c_twist = new ArrayList<>();
+                    c_twist.add(c);
+                    MappingClass just_c = new MappingClass(c_twist);
+                    cx.conjugate(just_c);
+                    result.add(cx);
                     result.addAll(invertAll(conj_generators));
                 }
                 // depending on the coset, add in the correct terms and
