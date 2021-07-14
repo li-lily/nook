@@ -347,7 +347,7 @@ public class MappingClass {
                     DehnTwist conj_back = new DehnTwist(leading.getidentifier(), 2);
                     result.add(new MappingClass(conj_front));
                     // conjugate by the inverse
-                    result.add(liftableElem.conjugate(conjugating_elem.inverse()));
+                    result = smartAdd(result, liftableElem.conjugate(conjugating_elem.inverse()));
                     result.add(new MappingClass(conj_back));
                 } else {
                     result.add(MC);
@@ -359,7 +359,7 @@ public class MappingClass {
                 List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
                 result.addAll(conj_generators);
                 // add the conjugated liftable term
-                result.add(liftableElem);
+                result = smartAdd(result, liftableElem);
                 // add the inverse of the conjugating element
                 result.addAll(invertAll(conj_generators));
             } else {
@@ -376,7 +376,7 @@ public class MappingClass {
                     result.addAll(conj_generators);
 
                     // now we conjugate the liftable thing by c
-                    result.add(liftableElem.conjugate(new MappingClass(c)));
+                    result = smartAdd(result, liftableElem.conjugate(new MappingClass(c)));
 
                     // then add in all the inverses
                     result.addAll(invertAll(conj_generators));
@@ -385,7 +385,7 @@ public class MappingClass {
                     conjugating_elem.append(x.inverse());
                     List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
                     result.addAll(conj_generators);
-                    result.add(liftableElem.conjugate(new MappingClass(x)));
+                    result = smartAdd(result, liftableElem.conjugate(new MappingClass(x)));
                     result.addAll(invertAll(conj_generators));
                 } else if (conjugating_elem.getCoset() == 6) {
                     // then it must be cx
@@ -405,7 +405,7 @@ public class MappingClass {
                     c_twist.add(c);
                     MappingClass just_c = new MappingClass(c_twist);
                     liftableElem = liftableElem.conjugate(just_c);
-                    result.add(liftableElem);
+                    result = smartAdd(result, liftableElem);
                     result.addAll(invertAll(conj_generators));
                 }
                 // depending on the coset, add in the correct terms and
