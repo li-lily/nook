@@ -199,6 +199,9 @@ public class MappingClass {
 
     /** Go CS **/
     public MappingClass conjugate(MappingClass conjugator) {
+        if (this.commutesWith(conjugator)) {
+            return this;
+        }
         MappingClass temp = this.multi(conjugator.inverse());
         return conjugator.multi(temp);
     }
@@ -234,6 +237,12 @@ public class MappingClass {
         this.word.add(d);
         preprocessing();
         findCoset();
+    }
+
+    /** This is THE FUNCTION **/
+    public MappingClass lift() {
+        // TODO: implement
+        return null;
     }
 
     /** Breaks down Mapping Class into its generators **/
@@ -432,6 +441,15 @@ public class MappingClass {
 
     public int getCoset() {
         return this.coset;
+    }
+
+    public int getLength() {
+        int length = 0;
+        for (DehnTwist twist : this.getWord()) {
+            length += Math.abs(twist.getExp());
+        }
+        this.length = length;
+        return length;
     }
 
     @Override
