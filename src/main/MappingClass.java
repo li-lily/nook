@@ -249,9 +249,10 @@ public class MappingClass {
     public List<MappingClass> smartAdd(List<MappingClass> list_mc, MappingClass m) {
         if (m.getWord().size() == 1) {
             DehnTwist d = m.getWord().get(0);
+            DehnTwist base = new DehnTwist(d.getidentifier(), 1);
             int e = Math.abs(d.getExp());
             int sign = Math.round(Math.signum(d.getExp()));
-            if (d.isLiftable()) {
+            if (base.isLiftable()) {
                 for (int i = 0; i < e; i++) {
                     list_mc.add(new MappingClass(new DehnTwist(d.getidentifier(), sign)));
                 }
@@ -266,9 +267,10 @@ public class MappingClass {
         } else if (m.getWord().size() == 3) {
             list_mc.add(new MappingClass(m.getWord().get(0)));
             DehnTwist d = m.getWord().get(1);
+            DehnTwist base = new DehnTwist(d.getidentifier(), 1);
             int e = Math.abs(m.getWord().get(1).getExp());
             int sign = Math.round(Math.signum(m.getWord().get(1).getExp()));
-            if (d.isLiftable()) {
+            if (base.isLiftable()) {
                 for (int i = 0; i < e; i++) {
                     list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(1).getidentifier(), sign)));
                 }
@@ -285,9 +287,10 @@ public class MappingClass {
             list_mc.add(new MappingClass(m.getWord().get(0)));
             list_mc.add(new MappingClass(m.getWord().get(1)));
             DehnTwist d = m.getWord().get(2);
+            DehnTwist base = new DehnTwist(d.getidentifier(), 1);
             int e = Math.abs(m.getWord().get(2).getExp());
             int sign = Math.round(Math.signum(m.getWord().get(2).getExp()));
-            if (d.isLiftable()) {
+            if (base.isLiftable()) {
                 for (int i = 0; i < e; i++) {
                     list_mc.add(new MappingClass(new DehnTwist(m.getWord().get(2).getidentifier(), sign)));
                 }
