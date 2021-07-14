@@ -268,9 +268,11 @@ public class MappingClass {
             }
             MappingClass conjugating_elem = new MappingClass(conjugatingTwists);
 
-
-            // process the conjugating element through the nonliftable factor function
-            if (conjugating_elem.isLiftable()) {
+            // TODO: add a condition here that if this is already just a conjugate then we don't do anything
+            if (conjugating_elem.getWord().size() == 1) {
+                result.add(MC);
+            } else if (conjugating_elem.isLiftable()) {
+                // process the conjugating element through the nonliftable factor function
                 // add in the generators for the conjugating element
                 // TODO: this is currently specialized for 3 ears
                 List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
@@ -285,10 +287,11 @@ public class MappingClass {
                 DehnTwist c = new DehnTwist(2, 4, 1);
                 DehnTwist x = new DehnTwist(3, 4, 1);
 
-                if (coset == 2) {
+                if (conjugating_elem.getCoset()== 2) {
                     // then it must be a c, so we append c^-1 to the end of the conjugating element
                     conjugating_elem.append(c.inverse());
                     List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
+
                     result.addAll(conj_generators);
 
                     // now we conjugate the liftable thing by c
@@ -296,14 +299,14 @@ public class MappingClass {
 
                     // then add in all the inverses
                     result.addAll(invertAll(conj_generators));
-                } else if (coset == 3) {
+                } else if (conjugating_elem.getCoset() == 3) {
                     // then it must be an x, so we conjugate by x^-1, same as above
                     conjugating_elem.append(x.inverse());
                     List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
                     result.addAll(conj_generators);
                     result.add(liftableElem.conjugate(new MappingClass(x)));
                     result.addAll(invertAll(conj_generators));
-                } else if (coset == 6) {
+                } else if (conjugating_elem.getCoset() == 6) {
                     // then it must be cx
                     conjugating_elem.append(x.inverse());
                     conjugating_elem.append(c.inverse());
@@ -344,7 +347,6 @@ public class MappingClass {
                 MappingClass conjugatorMC = new MappingClass(conjugator);
                 MappingClass liftable = new MappingClass(this.getWord().get(i));
                 MappingClass conjugatedLiftable = liftable.conjugate(conjugatorMC);
-
                 // the rest of the word is the same except without the liftable element
                 this.getWord().remove(i);
                 factoredMC.add(conjugatedLiftable);
@@ -375,13 +377,18 @@ public class MappingClass {
         List<MappingClass> result = new ArrayList<>();
 
         DehnTwist first_elt = this.getWord().remove(0);
-        DehnTwist second_elt = this.getWord().remove(0);
-        DehnTwist third_elt = this.getWord().remove(0);
-
         if (first_elt.getExp() == 2 || first_elt.getExp() == -2) {
             // if the first twist is a square, separate it out into the results
             result.add(new MappingClass(first_elt));
-        } else if (third_elt.getExp() == - first_elt.getExp()) {
+            // call the function recursively
+            result.addAll(this.nonliftableFactor3());
+            return result;
+        }
+
+        DehnTwist second_elt = this.getWord().remove(0);
+        DehnTwist third_elt = this.getWord().remove(0);
+
+        if (third_elt.getExp() == - first_elt.getExp()) {
             // in this case, we make a commutator out of the first two things
             MappingClass first = new MappingClass(first_elt);
             MappingClass second = new MappingClass(second_elt);
@@ -411,7 +418,8 @@ public class MappingClass {
 
     private boolean nonliftableValid() {
         for (DehnTwist t : this.getWord()) {
-            if (t.isLiftable() || t.getExp() > 2 || t.getExp() < -2) {
+            DehnTwist newT = new DehnTwist(t.getidentifier(), 1);
+            if (newT.isLiftable() || t.getExp() > 2 || t.getExp() < -2) {
                 return false;
             }
         }
