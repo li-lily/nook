@@ -98,9 +98,16 @@ public class MappingClass {
         return (this.coset == 1);
     }
 
-    private void parser() {
+    private List<DehnTwist> parser() {
         List<DehnTwist> result_parsed = new ArrayList<>();
-        //for (DehnTwist d : )
+        for (DehnTwist d : this.getWord()) {
+            if (!d.isLiftable()) {
+                result_parsed.addAll(d.decomp());
+            } else {
+                result_parsed.add(d);
+            }
+        }
+        return result_parsed;
 
     }
 
