@@ -383,6 +383,19 @@ public class MappingClass {
             }
             MappingClass conjugating_elem = new MappingClass(conjugatingTwists);
 
+//            if (!conjugating_elem.nonliftableValid()) {
+//                System.out.println(conjugating_elem);
+//            }
+
+            // if the conjugating element is not liftableValid (has higher powers)
+//            while (!conjugating_elem.nonliftableValid()) {
+//                System.out.println("I am printing out an invalid connjugator before I try coset helper on it");
+//                System.out.println(conjugating_elem);
+//                // fix the conjugating element to become
+////                List<MappingClass> conj_generators = conjugating_elem.comb();
+//                result.addAll(conjugating_elem.cosetHelper(liftableElem));
+//            }
+
             // TODO: add a condition here that if this is already just a conjugate then we don't do anything
             if (conjugating_elem.getWord().size() == 1) {
                 DehnTwist leading = conjugating_elem.getWord().get(0);
@@ -496,6 +509,11 @@ public class MappingClass {
             this.append(x.inverse());
             this.append(c.inverse());
             this.simplify();
+
+            // This is for if we had a cx for this and adding+simplifying makes the list empty. This avoids index -1 error
+            if (this.getWord().isEmpty()) {
+                return new ArrayList<>();
+            }
             //In this case the word must have a c^-2 at the end
             if (this.getWord().get(this.getWord().size() - 1).getExp() == -2) {
                 this.getWord().remove(this.getWord().size() - 1);
@@ -581,6 +599,9 @@ public class MappingClass {
                 // the rest of the word is the same except without the liftable element
                 this.getWord().remove(i);
                 factoredMC.add(conjugatedLiftable);
+                // TODO: resolve this dangerous op
+                this.simplify();
+                this.parser();
                 factoredMC.addAll(this.liftableFactor());
                 return factoredMC;
             } else {
@@ -591,13 +612,14 @@ public class MappingClass {
 
         this.simplify();
 
+        // wrong powers in the nonliftable factor
         if (!this.nonliftableValid()) {
+            System.out.println("printing out the invalid factor");
+            System.out.println(this);
             while (!this.nonliftableValid()) {
                 this.simplify();
                 factoredMC.addAll(this.liftableFactor());
-                // System.out.println("I got here");
             }
-            // System.out.println(this);
             return factoredMC;
         }
 
@@ -615,6 +637,7 @@ public class MappingClass {
         }
 
         if (!this.nonliftableValid()) {
+            System.out.println("This is the element you are trying to regard as a nonliftable factor:");
             System.out.println(this);
             throw new InvalidParameterException("the portion with pure nonliftable factors is impure");
         }
