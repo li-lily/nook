@@ -91,7 +91,14 @@ public class Rabbit {
 
     /** generates a random Dehn Twist. **/
     public DehnTwist genRandomTwist() {
-        return new DehnTwist(resident_random.nextInt(earCount), resident_random.nextInt(earCount), resident_random.nextInt(10));
+        int a = resident_random.nextInt(earCount);
+        int b = resident_random.nextInt(earCount);
+
+        if ((a - b) % earCount != 0) {
+            return new DehnTwist(a, b, resident_random.nextInt(10));
+        } else {
+            return new DehnTwist(a, b + 1, resident_random.nextInt(10));
+        }
     }
 
     /** Generates a random Mapping Class**/

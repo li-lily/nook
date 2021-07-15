@@ -12,18 +12,26 @@ public class MappingClass {
     private static int[] primes;
     private static boolean genPrimes = false;
     private List<DehnTwist> word;
+    private boolean identity = false;
     //private HashMap<List<DehnTwist>, Boolean> gen_count;
 
     public MappingClass (List<DehnTwist> word) {
-        if (!genPrimes) {
-            primes = primeList();
-            genPrimes = true;
+        if (word.isEmpty()) {
+            this.identity = true;
+            this.word = word;
+            this.coset = 1;
+        } else {
+            if (!genPrimes) {
+                primes = primeList();
+                genPrimes = true;
+            }
+            this.word = word;
+            //this.gen_count = parser();
+            preprocessing();
+            findCoset();
+            this.length = 0; //TODO: DONT FORGET TO SET LENGTH
         }
-        this.word = word;
-        //this.gen_count = parser();
-        preprocessing();
-        findCoset();
-        this.length = 0; //TODO: DONT FORGET TO SET LENGTH
+
     }
 
     public MappingClass (DehnTwist twist) {
@@ -163,6 +171,10 @@ public class MappingClass {
 
     /** Checks if the word of a mapping class can still be simplified further **/
     private boolean isSimplified() {
+        // identity check
+        if (this.getWord().isEmpty()) {
+            return true;
+        }
         for (int i = 0; i < this.word.size() - 1; i++) {
             DehnTwist current = this.word.get(i);
             DehnTwist next = this.word.get(i+1);
@@ -196,6 +208,10 @@ public class MappingClass {
     }
 
     public static MappingClass multiAll(List<MappingClass> mc_list) {
+        if (mc_list.isEmpty()) {
+            System.out.println("This is the identity");
+            return new MappingClass(new ArrayList<DehnTwist>());
+        }
         MappingClass final_mc = mc_list.get(0);
         for (int i = 1; i < mc_list.size(); i++) {
             final_mc = final_mc.multi(mc_list.get(i));
@@ -433,8 +449,6 @@ public class MappingClass {
                 result.addAll(invertAll(conj_generators));
 
             } else {
-                // then it must be a c, so we append c^-1 to the end of the conjugating element
-                this.append(c.inverse());
                 conj_generators = this.nonliftableFactor3();
 
                 result.addAll(conj_generators);
@@ -466,8 +480,6 @@ public class MappingClass {
                 result.addAll(invertAll(conj_generators));
 
             } else {
-                // then it must be a x, so we append x^-1 to the end of the conjugating element
-                this.append(x.inverse());
                 conj_generators = this.nonliftableFactor3();
 
                 result.addAll(conj_generators);
@@ -583,8 +595,9 @@ public class MappingClass {
             while (!this.nonliftableValid()) {
                 this.simplify();
                 factoredMC.addAll(this.liftableFactor());
-                System.out.println("I got here");
+                // System.out.println("I got here");
             }
+            // System.out.println(this);
             return factoredMC;
         }
 

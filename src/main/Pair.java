@@ -9,28 +9,45 @@ public class Pair {
     public Pair(int first, int second) {
         this.earCount = Rabbit.defaultEarCount;
 
-        this.first = first % (earCount + 1);
-        this.second = second % (earCount + 1);
+        first = first % (earCount + 1);
+        second = second % (earCount + 1);
 
-        if (this.first == 0) {
-            this.first = earCount + 1;
+
+        if (first == 0) {
+            first = earCount + 1;
         }
-        if (this.second == 0) {
-            this.second = earCount + 1;
+        if (second == 0) {
+            second = earCount + 1;
+        }
+
+        if (first < second) {
+            this.first = first;
+            this.second = second;
+        } else {
+            this.first = second;
+            this.second = first;
         }
 
     }
 
     public Pair(int first, int second, int earCount) {
         this.earCount = earCount;
-        this.first = first % (earCount + 1);
-        this.second = second % (earCount + 1);
+        first = first % (earCount + 1);
+        second = second % (earCount + 1);
 
-        if (this.first == 0) {
-            this.first = earCount + 1;
+        if (first == 0) {
+            first = earCount + 1;
         }
-        if (this.second == 0) {
-            this.second = earCount + 1;
+        if (second == 0) {
+            second = earCount + 1;
+        }
+
+        if (first < second) {
+            this.first = first;
+            this.second = second;
+        } else {
+            this.first = second;
+            this.second = first;
         }
 
     }
