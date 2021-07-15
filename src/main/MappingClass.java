@@ -393,57 +393,89 @@ public class MappingClass {
                 // add the inverse of the conjugating element
                 result.addAll(invertAll(conj_generators));
             } else {
-                // TODO: make this not bashed, and finish tomorrow with y replacements
-                // first get the right coset
-                DehnTwist c = new DehnTwist(2, 4, 1);
-                DehnTwist x = new DehnTwist(3, 4, 1);
-
-                if (conjugating_elem.getCoset()== 2) {
-                    // then it must be a c, so we append c^-1 to the end of the conjugating element
-                    conjugating_elem.append(c.inverse());
-                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
-
-                    result.addAll(conj_generators);
-
-                    // now we conjugate the liftable thing by c
-                    result = smartAdd(result, liftableElem.conjugate(new MappingClass(c)));
-
-                    // then add in all the inverses
-                    result.addAll(invertAll(conj_generators));
-                } else if (conjugating_elem.getCoset() == 3) {
-                    // then it must be an x, so we conjugate by x^-1, same as above
-                    conjugating_elem.append(x.inverse());
-                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
-                    result.addAll(conj_generators);
-                    result = smartAdd(result, liftableElem.conjugate(new MappingClass(x)));
-                    result.addAll(invertAll(conj_generators));
-                } else if (conjugating_elem.getCoset() == 6) {
-                    // then it must be cx
-                    conjugating_elem.append(x.inverse());
-                    conjugating_elem.append(c.inverse());
-                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
-                    result.addAll(conj_generators);
-
-                    // Make a mapping class by first conjugating by x
-                    List<DehnTwist> x_twist = new ArrayList<>();
-                    x_twist.add(x);
-                    MappingClass just_x = new MappingClass(x_twist);
-                    liftableElem = liftableElem.conjugate(just_x);
-
-                    // and then conjugate by c
-                    List<DehnTwist> c_twist = new ArrayList<>();
-                    c_twist.add(c);
-                    MappingClass just_c = new MappingClass(c_twist);
-                    liftableElem = liftableElem.conjugate(just_c);
-                    result = smartAdd(result, liftableElem);
-                    result.addAll(invertAll(conj_generators));
-                }
+                result.addAll(conjugating_elem.cosetHelper());
+//                // TODO: make this not bashed, and finish tomorrow with y replacements
+//                // first get the right coset
+//                DehnTwist c = new DehnTwist(2, 4, 1);
+//                DehnTwist x = new DehnTwist(3, 4, 1);
+//
+//                if (conjugating_elem.getCoset()== 2) {
+//                    // then it must be a c, so we append c^-1 to the end of the conjugating element
+//                    conjugating_elem.append(c.inverse());
+//                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
+//
+//                    result.addAll(conj_generators);
+//
+//                    // now we conjugate the liftable thing by c
+//                    result = smartAdd(result, liftableElem.conjugate(new MappingClass(c)));
+//
+//                    // then add in all the inverses
+//                    result.addAll(invertAll(conj_generators));
+//                } else if (conjugating_elem.getCoset() == 3) {
+//                    // then it must be an x, so we conjugate by x^-1, same as above
+//                    conjugating_elem.append(x.inverse());
+//                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
+//                    result.addAll(conj_generators);
+//                    result = smartAdd(result, liftableElem.conjugate(new MappingClass(x)));
+//                    result.addAll(invertAll(conj_generators));
+//                } else if (conjugating_elem.getCoset() == 6) {
+//                    // then it must be cx
+////                    conjugating_elem.append(x.inverse());
+////                    conjugating_elem.append(c.inverse());
+//                    List<MappingClass> conj_generators = new ArrayList<>();
+//
+//                    if (conjugating_elem.getWord().get(conjugating_elem.getWord().size() - 1).equals(x.inverse())) {
+//                        // if the last element is an x^-1, then remove that first
+//                        conjugating_elem.getWord().remove(conjugating_elem.getWord().size() - 1);
+//                        if (conjugating_elem.getWord().get(conjugating_elem.getWord().size() - 1).equals(c.inverse())) {
+//                            // then take out that terms and prepare to append a c^-2 on the generator list
+//                            conjugating_elem.getWord().remove(conjugating_elem.getWord().size() - 1);
+//                            conj_generators.addAll(conjugating_elem.nonliftableFactor3());
+//                            // put in c^-2
+//                            conj_generators.add(new MappingClass(c.inverse()).multi(new MappingClass(c.inverse())));
+//                            // put in cx^-2c^-1
+//                            conj_generators.add(new MappingClass(x.inverse()).multi(new MappingClass(x.inverse())).conjugate(new MappingClass(c)));
+//                        } else {
+//                            conjugating_elem.append(c.inverse());
+//                            conj_generators.addAll(conjugating_elem.nonliftableFactor3());
+//                            conj_generators.add(new MappingClass(x.inverse()).multi(new MappingClass(x.inverse())).conjugate(new MappingClass(c)));
+//                        }
+//                        // conjugating_elem.append(c.inverse());
+//                    } else {
+//                        conjugating_elem.append(x.inverse());
+//                        conjugating_elem.append(c.inverse());
+//                        conj_generators.addAll(conjugating_elem.nonliftableFactor3());
+//                    }
+//                    result.addAll(conj_generators);
+//
+//
+//
+//                    // Make a mapping class by first conjugating by x
+//                    List<DehnTwist> x_twist = new ArrayList<>();
+//                    x_twist.add(x);
+//                    MappingClass just_x = new MappingClass(x_twist);
+//                    liftableElem = liftableElem.conjugate(just_x);
+//
+//                    // and then conjugate by c
+//                    List<DehnTwist> c_twist = new ArrayList<>();
+//                    c_twist.add(c);
+//                    MappingClass just_c = new MappingClass(c_twist);
+//                    liftableElem = liftableElem.conjugate(just_c);
+//                    result = smartAdd(result, liftableElem);
+//                    result.addAll(invertAll(conj_generators));
+//                }
                 // depending on the coset, add in the correct terms and
             }
         }
 
         result.addAll(nonliftableGenerator);
         return result;
+    }
+
+    /** This function should parse through an originally nonliftable element with purely nonliftable letters and lifts
+     *  it via cosets **/
+    private List<MappingClass> cosetHelper() {
+        return null;
     }
 
     private static List<MappingClass> invertAll(List<MappingClass> conj) {
@@ -475,6 +507,18 @@ public class MappingClass {
             }
         }
 
+        this.simplify();
+
+        if (!this.nonliftableValid()) {
+            while (!this.nonliftableValid()) {
+                this.simplify();
+                factoredMC.addAll(this.liftableFactor());
+                System.out.println("I got here");
+            }
+            return factoredMC;
+        }
+
+
         factoredMC.add(this);
         return factoredMC;
     }
@@ -488,6 +532,7 @@ public class MappingClass {
         }
 
         if (!this.nonliftableValid()) {
+            System.out.println(this);
             throw new InvalidParameterException("the portion with pure nonliftable factors is impure");
         }
 
@@ -558,9 +603,10 @@ public class MappingClass {
     }
 
     private boolean nonliftableValid() {
-        for (DehnTwist t : this.getWord()) {
-            DehnTwist newT = new DehnTwist(t.getidentifier(), 1);
-            if (newT.isLiftable() || t.getExp() > 2 || t.getExp() < -2) {
+        for (int i = 1; i < this.getWord().size(); i++) {
+            DehnTwist t = this.getWord().get(i);
+            DehnTwist newT = new DehnTwist(this.getWord().get(i).getidentifier(), 1);
+            if (newT.isLiftable() || t.getExp() > 1 || t.getExp() < -1) {
                 return false;
             }
         }

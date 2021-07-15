@@ -141,6 +141,8 @@ public class Rabbit {
     }
 
     private MappingClass liftableHelper(MappingClass input) {
+        input = input.simplify();
+
         List<MappingClass> lifted_mc = new ArrayList<>();
         List<MappingClass> before_lifting = input.parser().comb();
         System.out.println(before_lifting.size());
