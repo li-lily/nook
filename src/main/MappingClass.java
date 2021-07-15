@@ -393,78 +393,7 @@ public class MappingClass {
                 // add the inverse of the conjugating element
                 result.addAll(invertAll(conj_generators));
             } else {
-                result.addAll(conjugating_elem.cosetHelper());
-//                // TODO: make this not bashed, and finish tomorrow with y replacements
-//                // first get the right coset
-//                DehnTwist c = new DehnTwist(2, 4, 1);
-//                DehnTwist x = new DehnTwist(3, 4, 1);
-//
-//                if (conjugating_elem.getCoset()== 2) {
-//                    // then it must be a c, so we append c^-1 to the end of the conjugating element
-//                    conjugating_elem.append(c.inverse());
-//                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
-//
-//                    result.addAll(conj_generators);
-//
-//                    // now we conjugate the liftable thing by c
-//                    result = smartAdd(result, liftableElem.conjugate(new MappingClass(c)));
-//
-//                    // then add in all the inverses
-//                    result.addAll(invertAll(conj_generators));
-//                } else if (conjugating_elem.getCoset() == 3) {
-//                    // then it must be an x, so we conjugate by x^-1, same as above
-//                    conjugating_elem.append(x.inverse());
-//                    List<MappingClass> conj_generators = conjugating_elem.nonliftableFactor3();
-//                    result.addAll(conj_generators);
-//                    result = smartAdd(result, liftableElem.conjugate(new MappingClass(x)));
-//                    result.addAll(invertAll(conj_generators));
-//                } else if (conjugating_elem.getCoset() == 6) {
-//                    // then it must be cx
-////                    conjugating_elem.append(x.inverse());
-////                    conjugating_elem.append(c.inverse());
-//                    List<MappingClass> conj_generators = new ArrayList<>();
-//
-//                    if (conjugating_elem.getWord().get(conjugating_elem.getWord().size() - 1).equals(x.inverse())) {
-//                        // if the last element is an x^-1, then remove that first
-//                        conjugating_elem.getWord().remove(conjugating_elem.getWord().size() - 1);
-//                        if (conjugating_elem.getWord().get(conjugating_elem.getWord().size() - 1).equals(c.inverse())) {
-//                            // then take out that terms and prepare to append a c^-2 on the generator list
-//                            conjugating_elem.getWord().remove(conjugating_elem.getWord().size() - 1);
-//                            conj_generators.addAll(conjugating_elem.nonliftableFactor3());
-//                            // put in c^-2
-//                            conj_generators.add(new MappingClass(c.inverse()).multi(new MappingClass(c.inverse())));
-//                            // put in cx^-2c^-1
-//                            conj_generators.add(new MappingClass(x.inverse()).multi(new MappingClass(x.inverse())).conjugate(new MappingClass(c)));
-//                        } else {
-//                            conjugating_elem.append(c.inverse());
-//                            conj_generators.addAll(conjugating_elem.nonliftableFactor3());
-//                            conj_generators.add(new MappingClass(x.inverse()).multi(new MappingClass(x.inverse())).conjugate(new MappingClass(c)));
-//                        }
-//                        // conjugating_elem.append(c.inverse());
-//                    } else {
-//                        conjugating_elem.append(x.inverse());
-//                        conjugating_elem.append(c.inverse());
-//                        conj_generators.addAll(conjugating_elem.nonliftableFactor3());
-//                    }
-//                    result.addAll(conj_generators);
-//
-//
-//
-//                    // Make a mapping class by first conjugating by x
-//                    List<DehnTwist> x_twist = new ArrayList<>();
-//                    x_twist.add(x);
-//                    MappingClass just_x = new MappingClass(x_twist);
-//                    liftableElem = liftableElem.conjugate(just_x);
-//
-//                    // and then conjugate by c
-//                    List<DehnTwist> c_twist = new ArrayList<>();
-//                    c_twist.add(c);
-//                    MappingClass just_c = new MappingClass(c_twist);
-//                    liftableElem = liftableElem.conjugate(just_c);
-//                    result = smartAdd(result, liftableElem);
-//                    result.addAll(invertAll(conj_generators));
-//                }
-                // depending on the coset, add in the correct terms and
+                result.addAll(conjugating_elem.cosetHelper(liftableElem));
             }
         }
 
@@ -474,8 +403,149 @@ public class MappingClass {
 
     /** This function should parse through an originally nonliftable element with purely nonliftable letters and lifts
      *  it via cosets **/
-    private List<MappingClass> cosetHelper() {
-        return null;
+    private List<MappingClass> cosetHelper(MappingClass liftableElem) {
+
+        List<MappingClass> result = new ArrayList<>();
+        List<MappingClass> conj_generators = new ArrayList<>();
+
+        DehnTwist c = new DehnTwist(2, 4, 1);
+        DehnTwist x = new DehnTwist(3, 4, 1);
+        MappingClass c_mc = new MappingClass(c);
+        MappingClass x_mc = new MappingClass(x);
+
+        //The c coset
+        if (this.getCoset() == 2) {
+            this.append(c.inverse());
+            this.simplify();
+            if (this.getWord().get(this.getWord().size() - 1).getExp() == -2) {
+
+                this.getWord().remove(this.getWord().size() - 1);
+                conj_generators = this.nonliftableFactor3();
+
+                conj_generators.add(c_mc.multi(c_mc).inverse());
+
+                result.addAll(conj_generators);
+
+                // now we conjugate the liftable thing by c
+                result = smartAdd(result, liftableElem.conjugate(c_mc));
+
+                // then add in all the inverses
+                result.addAll(invertAll(conj_generators));
+
+            } else {
+                // then it must be a c, so we append c^-1 to the end of the conjugating element
+                this.append(c.inverse());
+                conj_generators = this.nonliftableFactor3();
+
+                result.addAll(conj_generators);
+
+                // now we conjugate the liftable thing by c
+                result = smartAdd(result, liftableElem.conjugate(c_mc));
+
+                // then add in all the inverses
+                result.addAll(invertAll(conj_generators));
+            }
+
+        //The x coset
+        } else if (this.getCoset() == 3) {
+            this.append(x.inverse());
+            this.simplify();
+            if (this.getWord().get(this.getWord().size() - 1).getExp() == -2) {
+
+                this.getWord().remove(this.getWord().size() - 1);
+                conj_generators = this.nonliftableFactor3();
+
+                conj_generators.add(x_mc.multi(x_mc).inverse());
+
+                result.addAll(conj_generators);
+
+                // now we conjugate the liftable thing by x
+                result = smartAdd(result, liftableElem.conjugate(x_mc));
+
+                // then add in all the inverses
+                result.addAll(invertAll(conj_generators));
+
+            } else {
+                // then it must be a x, so we append x^-1 to the end of the conjugating element
+                this.append(x.inverse());
+                conj_generators = this.nonliftableFactor3();
+
+                result.addAll(conj_generators);
+
+                // now we conjugate the liftable thing by x
+                result = smartAdd(result, liftableElem.conjugate(x_mc));
+
+                // then add in all the inverses
+                result.addAll(invertAll(conj_generators));
+            }
+
+        //The cx coset
+        } else if (this.getCoset() == 6) {
+            this.append(x.inverse());
+            this.append(c.inverse());
+            this.simplify();
+            //In this case the word must have a c^-2 at the end
+            if (this.getWord().get(this.getWord().size() - 1).getExp() == -2) {
+                this.getWord().remove(this.getWord().size() - 1);
+
+                conj_generators = this.nonliftableFactor3();
+
+                conj_generators.add(c_mc.multi(c_mc).inverse());
+
+                result.addAll(conj_generators);
+
+                // now we conjugate the liftable thing by cx
+                result = smartAdd(result, liftableElem.conjugate(c_mc.multi(x_mc)));
+
+                // then add in all the inverses
+                result.addAll(invertAll(conj_generators));
+
+            //For this case the word will have a x^-2c^-1 at the end
+            } else if (this.getWord().get(this.getWord().size() - 2).getExp() == -2) {
+                this.getWord().remove(this.getWord().size() - 1);
+                this.getWord().remove(this.getWord().size() - 1);
+
+                //In this case, conjugation will create a c^{-2} at the end
+                if (this.getWord().get(this.getWord().size() - 1).getExp() == -1) {
+                    this.getWord().remove(this.getWord().size() - 1);
+
+                    conj_generators = this.nonliftableFactor3();
+
+                    conj_generators.add(c_mc.multi(c_mc).inverse());
+                    conj_generators.add(x_mc.multi(x_mc).inverse().conjugate(c_mc));
+
+                    result.addAll(conj_generators);
+
+                    // now we conjugate the liftable thing by cx
+                    result = smartAdd(result, liftableElem.conjugate(c_mc.multi(x_mc)));
+
+                    // then add in all the inverses
+                    result.addAll(invertAll(conj_generators));
+
+                //In the other case, a c will be removed from the end
+                } else {
+                    this.getWord().remove(this.getWord().size() - 1);
+
+                    conj_generators = this.nonliftableFactor3();
+
+                    conj_generators.add(x_mc.multi(x_mc).inverse().conjugate(c_mc));
+
+                    result.addAll(conj_generators);
+
+                    // now we conjugate the liftable thing by cx
+                    result = smartAdd(result, liftableElem.conjugate(c_mc.multi(x_mc)));
+
+                    // then add in all the inverses
+                    result.addAll(invertAll(conj_generators));
+                }
+
+            }
+
+        } else {
+            throw new InvalidParameterException("Ma'am this is a Wendy's - this element is not in a correct coset");
+        }
+
+        return result;
     }
 
     private static List<MappingClass> invertAll(List<MappingClass> conj) {
