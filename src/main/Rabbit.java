@@ -77,8 +77,13 @@ public class Rabbit {
         if (this.earCount == 3) {
             MappingClass temp = new MappingClass(new DehnTwist(2, earCount + 1, 1));
             temp.append(new DehnTwist(3, earCount + 1, 1));
+            //z
+            generators.add(generators.get(0).conjugate(temp));
+            //b
             generators.add(generators.get(1).conjugate(temp));
+            //w
             generators.add(generators.get(2).conjugate(temp));
+            //c^2
             generators.add(generators.get(3).conjugate(temp));
         }
 
