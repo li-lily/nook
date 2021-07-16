@@ -26,12 +26,16 @@ public class Experiments {
 
         // make a list of all length  less than 3 twists
         everything.add(x);
-        //everything.add(y);
         everything.add(w);
         everything.add(z);
         everything.add(b);
         everything.add(c);
         everything.add(y);
+        everything.add(x.inverse());
+        everything.add(w.inverse());
+        everything.add(z.inverse());
+        everything.add(b.inverse());
+        everything.add(c.inverse());
 
         Map<MappingClass, Boolean> three_twists = new HashMap<>();
 
