@@ -115,6 +115,9 @@ public class MappingClass {
                 result_parsed.add(d);
             }
         }
+
+        // modify the word
+        this.word = result_parsed;
         return new MappingClass(result_parsed);
 
     }
