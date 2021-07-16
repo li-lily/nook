@@ -71,7 +71,6 @@ public class Rabbit {
                     MappingClass con = new MappingClass(new DehnTwist(k, earCount + 1, 1));
                     generators.add(temp1.commutator(temp2).conjugate(con));
                 }
-
             }
         }
 
@@ -80,6 +79,7 @@ public class Rabbit {
             temp.append(new DehnTwist(3, earCount + 1, 1));
             generators.add(generators.get(1).conjugate(temp));
             generators.add(generators.get(2).conjugate(temp));
+            generators.add(generators.get(3).conjugate(temp));
         }
 
         return generators;
@@ -255,6 +255,7 @@ public class Rabbit {
             MappingClass y = new MappingClass(new DehnTwist(1, 4, 1));
             MappingClass b = new MappingClass(new DehnTwist(1, 3, 1));
             lift.put(generators.get(2).conjugate(temp), new MappingClass(new DehnTwist(3, 4, 1)).conjugate(y).conjugate(b));
+            lift.put(generators.get(3).conjugate(temp), b);
         }
 
         this.liftingMap = lift;
