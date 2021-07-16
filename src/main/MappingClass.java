@@ -116,7 +116,6 @@ public class MappingClass {
             }
         }
 
-        // modify the word
         this.word = result_parsed;
         return new MappingClass(result_parsed);
 
