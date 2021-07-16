@@ -157,8 +157,8 @@ public class Rabbit {
 
         List<MappingClass> lifted_mc = new ArrayList<>();
         List<MappingClass> before_lifting = input.parser().comb();
-        System.out.println("This is how many generators we broke up into");
-        System.out.println(before_lifting.size());
+//        System.out.println("This is how many generators we broke up into");
+//        System.out.println(before_lifting + "is of size " + before_lifting.size());
         for (MappingClass mc : before_lifting) {
             // if it's in the map
             if (liftingMap.containsKey(mc)) {

@@ -227,7 +227,12 @@ public class DehnTwist {
     @Override
     public String toString() {
         if (nickname != 'o') {
-            return "D(" + nickname + ")^" + this.getExp();
+            if (this.getExp() == 1) {
+                return "D(" + nickname + ")";
+            } else {
+                return "D(" + nickname + ")^" + this.getExp();
+
+            }
         }
         return "D(" + this.identifier.getFirst() + ", " + this.identifier.getSecond() + ")^" + this.getExp();
     }

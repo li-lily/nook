@@ -411,7 +411,7 @@ public class MappingClass {
                     result = smartAdd(result, liftableElem.conjugate(conjugating_elem.inverse()));
                     result.add(new MappingClass(conj_back));
                 } else {
-                    result.add(MC);
+                    result = smartAdd(result, MC);
                 }
             } else if (conjugating_elem.isLiftable()) {
                 // process the conjugating element through the nonliftable factor function
