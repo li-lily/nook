@@ -92,7 +92,7 @@ public class Experiments {
                             if (temp.getLength() < shortest_MC.getLength()) {
                                 shortest_MC = temp;
                             }
-                            MC = r.lift(MC);
+                            MC = temp;
                             counter++;
                         }
 
