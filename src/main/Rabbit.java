@@ -162,10 +162,10 @@ public class Rabbit {
         for (MappingClass mc : before_lifting) {
             // if it's in the map
             if (liftingMap.containsKey(mc)) {
-                lifted_mc.add(liftingMap.get(mc));
+                lifted_mc.add(new MappingClass(liftingMap.get(mc).getWord()));
             } else if (liftingMap.containsKey(mc.inverse())) {
                 // if its inverse is in the map
-                lifted_mc.add(liftingMap.get(mc.inverse()).inverse());
+                lifted_mc.add(new MappingClass(liftingMap.get(mc.inverse()).inverse().getWord()));
             } else {
                 // uh oh
                 System.out.println(mc);
