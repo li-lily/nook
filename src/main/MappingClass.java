@@ -87,9 +87,9 @@ public class MappingClass {
             } else {
                 replaced_twists.add(d);
             }
-
-            this.word = replaced_twists;
         }
+
+        this.word = replaced_twists;
 
         // separate out the odd powers into odd powers and even powers
         // TODO: implement this
