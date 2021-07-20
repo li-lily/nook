@@ -59,14 +59,31 @@ public class MappingClass {
             if (d.getidentifier().getFirst() == 1 && d.getidentifier().getSecond() == Rabbit.defaultEarCount + 1) {
                 //int index = word.indexOf(d);
                 //word.remove(d);
+
+                List<DehnTwist> y_twists = new ArrayList<>();
+
                 for (int i = 3; i <= Rabbit.defaultEarCount + 1; i++) {
                     for (int j = 2; j < i; j++) {
-                        replaced_twists.add(new DehnTwist(j, i, -1));
+                        y_twists.add(new DehnTwist(j, i, -1));
                     }
                 }
                 for (int i = 2; i <= Rabbit.defaultEarCount; i++) {
-                    replaced_twists.add(new DehnTwist(1, i, -1));
+                    y_twists.add(new DehnTwist(1, i, -1));
                 }
+
+                MappingClass y_mc = new MappingClass(y_twists);
+                if (d.getExp() < 0) {
+                    y_mc = y_mc.inverse();
+                }
+
+                MappingClass y_mc_copy = y_mc;
+
+                for (int i = 1; i < Math.abs(d.getExp()); i++) {
+                    y_mc = y_mc.multi(y_mc_copy);
+                }
+
+                replaced_twists.addAll(y_mc.getWord());
+
             } else {
                 replaced_twists.add(d);
             }
@@ -187,6 +204,10 @@ public class MappingClass {
                 // checks for 0 exponents
                 return false;
             }
+        }
+
+        if (this.word.get(this.word.size() - 1).getExp() == 0) {
+            return false;
         }
 
         return true;
@@ -351,6 +372,44 @@ public class MappingClass {
         }
 
         return list_mc;
+    }
+
+    /** Computes one of the four projections to F2 possible for a 3-eared Mapping Class **/
+    public MappingClass projToF2(int point) {
+        List<DehnTwist> newTwist = new ArrayList<>();
+        DehnTwist x = new DehnTwist(3, 4, 1);
+        DehnTwist c = new DehnTwist(2, 4, 1);
+        DehnTwist z = new DehnTwist(2, 1, 1);
+        DehnTwist b = new DehnTwist(1, 3, 1);
+        DehnTwist w = new DehnTwist(2, 3, 1);
+        DehnTwist y = new DehnTwist(1, 4, 1);
+        if (point == 1) {
+            for (DehnTwist d : this.getWord()) {
+                if (!d.equals(z) && !d.equals(b) && !d.equals(y) && !d.equals(z.inverse()) && !d.equals(b.inverse()) && !d.equals(y.inverse())) {
+                    newTwist.add(d);
+                }
+            }
+        } else if (point == 2) {
+            for (DehnTwist d : this.getWord()) {
+                if (!d.equals(z) && !d.equals(c) && !d.equals(w) && !d.equals(z.inverse()) && !d.equals(c.inverse()) && !d.equals(w.inverse())) {
+                    newTwist.add(d);
+                }
+            }
+        } else if (point == 3) {
+            for (DehnTwist d : this.getWord()) {
+                if (!d.equals(w) && !d.equals(b) && !d.equals(x) && !d.equals(w.inverse()) && !d.equals(b.inverse()) && !d.equals(x.inverse())) {
+                    newTwist.add(d);
+                }
+            }
+        } else if (point == 4) {
+            for (DehnTwist d : this.getWord()) {
+                if (!d.equals(x) && !d.equals(c) && !d.equals(y) && !d.equals(x.inverse()) && !d.equals(c.inverse()) && !d.equals(y.inverse())) {
+                    newTwist.add(d);
+                }
+            }
+        }
+
+        return new MappingClass(newTwist).simplify();
     }
 
     /** Breaks down Mapping Class into its generators **/
