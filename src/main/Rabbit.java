@@ -15,6 +15,7 @@ public class Rabbit {
     private Random resident_random;
     private List<MappingClass> generators;
     private HashMap<MappingClass,MappingClass> liftingMap;
+    public static HashMap<MappingClass, Boolean> identityMap = new HashMap<>();
 
     public Rabbit(int earCount) {
         this.resident_random = new Random(200);
@@ -27,6 +28,74 @@ public class Rabbit {
         this.resident_random = new Random(200);
         this.generators = createGenerators();
         createMap();
+        createIdentity();
+    }
+
+    private void createIdentity() {
+        // TODO: implement
+        for (int first = 1; first < 5; first++) {
+            for (int second = 1; second < first; second++) {
+                List<DehnTwist> twist_list = new ArrayList<>();
+                List<Integer> indices = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    indices.add(i);
+                }
+
+                twist_list.add(0, new DehnTwist(first, first + 1, 1));
+                twist_list.add(0, new DehnTwist(first, first + 2, 1));
+                twist_list.add(0, new DehnTwist(first, first + 3, 1));
+                indices.remove(first);
+                indices.remove(second);
+                for (int third: indices) {
+                    twist_list.add(0, new DehnTwist(second, third, 1));
+                }
+                twist_list.add(0, new DehnTwist(indices.get(0), indices.get(1), 1));
+                // first add in the list as is into the indentity hash
+                MappingClass next_id = new MappingClass(new ArrayList<>(twist_list));
+                identityMap.put(next_id, true);
+                identityMap.put(next_id.inverse(), true);
+
+                for (int j = 0; j < 5; j++) {
+                    // give a new permutation
+                    DehnTwist temp = twist_list.remove(0);
+                    twist_list.add(temp);
+                    next_id = new MappingClass(new ArrayList<>(twist_list));
+                    identityMap.put(next_id, true);
+                    identityMap.put(next_id.inverse(), true);
+                }
+            }
+
+            for (int second = first + 1; second < 5; second++) {
+                List<DehnTwist> twist_list = new ArrayList<>();
+                List<Integer> indices = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    indices.add(i);
+                }
+
+                twist_list.add(0, new DehnTwist(first, first + 1, 1));
+                twist_list.add(0, new DehnTwist(first, first + 2, 1));
+                twist_list.add(0, new DehnTwist(first, first + 3, 1));
+                indices.remove(first);
+                indices.remove(second);
+                for (int third: indices) {
+                    twist_list.add(0, new DehnTwist(second, third, 1));
+                }
+                twist_list.add(0, new DehnTwist(indices.get(0), indices.get(1), 1));
+                // insert this configuration into the identitymap
+                MappingClass next_id = new MappingClass(new ArrayList<>(twist_list));
+                identityMap.put(next_id, true);
+                identityMap.put(next_id.inverse(), true);
+
+                for (int j = 0; j < 5; j++) {
+                    // give a new permutation
+                    DehnTwist temp = twist_list.remove(0);
+                    twist_list.add(temp);
+                    next_id = new MappingClass(new ArrayList<>(twist_list));
+                    identityMap.put(next_id, true);
+                    identityMap.put(next_id.inverse(), true);
+                }
+            }
+        }
     }
 
     public List<MappingClass> createGenerators() {

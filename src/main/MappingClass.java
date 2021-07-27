@@ -95,6 +95,15 @@ public class MappingClass {
         // TODO: implement this
     }
 
+    /** Slice out the 6 letters starting from the index i and checks to see if it's the identity */
+    private boolean identityChecker(int i) {
+        if (this.getWord().size() < i + 6) {
+            return false;
+        } else {
+            List<DehnTwist> curr = this.getWord().subList(i, i + 6);
+            return Rabbit.identityMap.containsKey(curr);
+        }
+    }
 
     private int[] primeList() {
         int[] primes = new int[Rabbit.defaultEarCount + 1];
