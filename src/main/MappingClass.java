@@ -76,7 +76,7 @@ public class MappingClass {
                     y_mc = y_mc.inverse();
                 }
 
-                MappingClass y_mc_copy = y_mc;
+                MappingClass y_mc_copy = new MappingClass(y_mc.getWord());
 
                 for (int i = 1; i < Math.abs(d.getExp()); i++) {
                     y_mc = y_mc.multi(y_mc_copy);
