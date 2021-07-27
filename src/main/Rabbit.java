@@ -37,21 +37,22 @@ public class Rabbit {
             for (int second = 1; second < first; second++) {
                 List<DehnTwist> twist_list = new ArrayList<>();
                 List<Integer> indices = new ArrayList<>();
-                for (int i = 0; i < 5; i++) {
+                for (int i = 1; i < 5; i++) {
                     indices.add(i);
                 }
 
                 twist_list.add(0, new DehnTwist(first, first + 1, 1));
                 twist_list.add(0, new DehnTwist(first, first + 2, 1));
                 twist_list.add(0, new DehnTwist(first, first + 3, 1));
-                indices.remove(first);
-                indices.remove(second);
+                indices.remove(Integer.valueOf(first));
+                indices.remove(Integer.valueOf(second));
                 for (int third: indices) {
                     twist_list.add(0, new DehnTwist(second, third, 1));
                 }
                 twist_list.add(0, new DehnTwist(indices.get(0), indices.get(1), 1));
                 // first add in the list as is into the indentity hash
                 MappingClass next_id = new MappingClass(new ArrayList<>(twist_list));
+                System.out.println(next_id);
                 identityMap.put(next_id, true);
                 identityMap.put(next_id.inverse(), true);
 
@@ -68,21 +69,24 @@ public class Rabbit {
             for (int second = first + 1; second < 5; second++) {
                 List<DehnTwist> twist_list = new ArrayList<>();
                 List<Integer> indices = new ArrayList<>();
-                for (int i = 0; i < 5; i++) {
+                for (int i = 1; i < 5; i++) {
                     indices.add(i);
                 }
 
                 twist_list.add(0, new DehnTwist(first, first + 1, 1));
                 twist_list.add(0, new DehnTwist(first, first + 2, 1));
                 twist_list.add(0, new DehnTwist(first, first + 3, 1));
-                indices.remove(first);
-                indices.remove(second);
+                indices.remove(Integer.valueOf(first));
+                indices.remove(Integer.valueOf(second));
                 for (int third: indices) {
                     twist_list.add(0, new DehnTwist(second, third, 1));
                 }
                 twist_list.add(0, new DehnTwist(indices.get(0), indices.get(1), 1));
-                // insert this configuration into the identitymap
-                MappingClass next_id = new MappingClass(new ArrayList<>(twist_list));
+                System.out.println("List of Dehn Twists: " + twist_list);
+                // insert this configuration into the identity map
+                //ArrayList<DehnTwist> twist_list_copy = new ArrayList<>(twist_list);
+                MappingClass next_id = new MappingClass(twist_list);
+                System.out.println(next_id);
                 identityMap.put(next_id, true);
                 identityMap.put(next_id.inverse(), true);
 
@@ -90,7 +94,7 @@ public class Rabbit {
                     // give a new permutation
                     DehnTwist temp = twist_list.remove(0);
                     twist_list.add(temp);
-                    next_id = new MappingClass(new ArrayList<>(twist_list));
+                    next_id = new MappingClass(twist_list);
                     identityMap.put(next_id, true);
                     identityMap.put(next_id.inverse(), true);
                 }
