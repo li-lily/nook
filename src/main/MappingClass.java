@@ -52,6 +52,19 @@ public class MappingClass {
         // make a new list to prepare for copying down the same dehn twists
         List<DehnTwist> replaced_twists = new ArrayList<>();
 
+        int k = 0;
+        while(k < this.word.size() - 5) {
+            if (!identityChecker(k)) {
+                replaced_twists.add(this.word.get(k));
+                k++;
+            } else {
+                k += 6;
+            }
+        }
+
+        this.word = new ArrayList<>(replaced_twists);
+        replaced_twists = new ArrayList<>();
+
         for (DehnTwist d : this.word) {
             //TODO: Make it so we aren't using defaultEarCount
 
@@ -89,7 +102,7 @@ public class MappingClass {
             }
         }
 
-        this.word = replaced_twists;
+        this.word = new ArrayList<>(replaced_twists);
 
         // separate out the odd powers into odd powers and even powers
         // TODO: implement this
